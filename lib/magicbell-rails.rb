@@ -21,10 +21,6 @@ module MagicBellRails
       "//" + CLOUDFRONT_DOMAIN + '/magicbell.min.js'
     end
 
-    def project_id
-      config.project_id
-    end
-
     def api_key
       config.api_key
     end
@@ -33,9 +29,19 @@ module MagicBellRails
       config.api_secret
     end
 
+    def project_id
+      config.project_id
+    end
+
+    def magic_address
+      config.magic_address
+    end
+
     # Calculate HMAC for user's email
     def user_key(user_email)
       MagicBellRails::HMAC.calculate_hmac(user_email, MagicBellRails.api_secret)
     end
   end
 end
+
+require "magicbell-rails/railtie"

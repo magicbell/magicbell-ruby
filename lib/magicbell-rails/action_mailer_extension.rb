@@ -1,7 +1,7 @@
-class MagicBellRails
+module MagicBellRails
   module ActionMailerExtension
     def ring_the_magicbell
-      default bcc: MagicBell.configuration.magic_address
+      default bcc: MagicBellRails.magic_address
     end
   end
 end
