@@ -8,4 +8,5 @@ Gem::Specification.new do |s|
   s.files         = Dir["{lib}/**/*"] + ["README.md"]
 
   s.add_dependency("activesupport")
+  s.add_dependency("rails")
 end
