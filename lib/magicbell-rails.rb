@@ -39,7 +39,7 @@ module MagicBellRails
 
     # Calculate HMAC for user's email
     def user_key(user_email)
-      MagicBellRails::HMAC.calculate_hmac(user_email, MagicBellRails.api_secret)
+      MagicBellRails::HMAC.calculate(user_email, MagicBellRails.api_secret)
     end
   end
 end
