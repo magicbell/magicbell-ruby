@@ -7,7 +7,7 @@ This gem makes it easy to add [MagicBell's](https://magicbell.io/) notification 
 Add the magicbell gem to your app's Gemfile
 
 ```ruby
-gem "magicbell"
+gem "magicbell-rails"
 ```
 
 Run
@@ -41,15 +41,17 @@ Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the 
   $('<link/>', {
      rel: 'stylesheet',
      type: 'text/css',
-     href: <%= MagicBellRails.css_url %>
+    href: <%= MagicBellRails.widget_css_url %>
   }).appendTo('head');
   $(document).ready(function () {
     // Initialize MagicBell after the script is fetched
-    $.getScript(<%= MagicBellRails.javascript_url %>, initializeMagicBell);
+    $.getScript(<%= MagicBellRails.widget_javascript_url %>, initializeMagicBell);
   });
   function initializeMagicBell() {
     MagicBell.initialize({
-      target: document.getElementById('mb-widget-placeholder'), // Let us know where you've place your notification icon
+      // Choose where you'd like the MagicBell widget to appear
+      // Our customers usually use a div containing a bell icon as the target
+      target: document.getElementById('mb-widget-placeholder'),
       projectId: "<%= MagicBellRails.project_id %>",
       apiKey: "<%= MagicBellRails.api_key %>",
       userEmail: <%= current_user.email %>,
