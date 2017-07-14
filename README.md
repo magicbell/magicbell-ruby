@@ -39,13 +39,13 @@ Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the 
 <!-- MagicBell widget -->
 <script>
   $('<link/>', {
-     rel: 'stylesheet',
-     type: 'text/css',
-    href: <%= MagicBellRails.widget_css_url %>
+    rel: 'stylesheet',
+    type: 'text/css',
+    href: "<%= MagicBellRails.widget_css_url %>"
   }).appendTo('head');
   $(document).ready(function () {
     // Initialize MagicBell after the script is fetched
-    $.getScript(<%= MagicBellRails.widget_javascript_url %>, initializeMagicBell);
+    $.getScript("<%= MagicBellRails.widget_javascript_url %>", initializeMagicBell);
   });
   function initializeMagicBell() {
     MagicBell.initialize({
@@ -54,7 +54,7 @@ Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the 
       target: document.getElementById('mb-widget-placeholder'),
       projectId: "<%= MagicBellRails.project_id %>",
       apiKey: "<%= MagicBellRails.api_key %>",
-      userEmail: <%= current_user.email %>,
+      userEmail: "<%= current_user.email %>",
       userKey: "<%= MagicBellRails.user_key(current_user.email) %>"
     });
   }

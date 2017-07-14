@@ -18,7 +18,7 @@ module MagicBellRails
     end
 
     def widget_javascript_url
-      "//" + CLOUDFRONT_DOMAIN + '/magicbell.min.css'
+      "//" + CLOUDFRONT_DOMAIN + '/magicbell.min.js'
     end
 
     def project_id
