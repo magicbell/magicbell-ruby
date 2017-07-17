@@ -1,3 +1,4 @@
+require "openssl"
 require "base64"
 
 module MagicBellRails
