@@ -9,6 +9,8 @@ describe MagicBellRails::ActionMailerExtension do
       Class.new(ActionMailer::Base) do
         include MagicBellRails::ActionMailerExtension
 
+        ring_the_magicbell
+
         def new_comment
           mail(
             from: "notifications@mydummyapp.com",
@@ -34,6 +36,23 @@ describe MagicBellRails::ActionMailerExtension do
         end
       end
     }
+
+    before(:each) do
+      MagicBellRails.configure do |config|
+        config.magic_address = "dummy_magic_address@ring.magicbell.io"
+      end
+    end
+
+    after(:each) do
+      MagicBellRails.reset_config
+    end
+
+    describe ".ring_the_magicbell" do
+      it "blind carbon copies all emails to the magic address" do
+        mail = notification_mailer.new_comment
+        expect(mail["Bcc"].decoded).to eq("dummy_magic_address@ring.magicbell.io")
+      end
+    end
 
     describe "#magicbell_notification_action_url" do
       it "adds the 'X-MagicBell-Notification-ActionUrl' header" do

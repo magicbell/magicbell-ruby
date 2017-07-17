@@ -6,22 +6,24 @@ describe MagicBellRails do
     let(:api_key) { "dummy_api_key" }
     let(:project_id) { 1 }
 
-    it "configures the gem" do
+    before do
       MagicBellRails.configure do |config|
         config.magic_address = magic_address
         config.api_key = api_key
         config.api_secret = api_secret
         config.project_id = project_id
       end
-
-      expect(MagicBellRails.magic_address).to eq(magic_address)
-      expect(MagicBellRails.api_key).to eq(api_key)
-      expect(MagicBellRails.api_secret).to eq(api_secret)
-      expect(MagicBellRails.api_secret).to eq(api_secret)
     end
 
     after do
       MagicBellRails.reset_config
+    end
+
+    it "configures the gem" do
+      expect(MagicBellRails.magic_address).to eq(magic_address)
+      expect(MagicBellRails.api_key).to eq(api_key)
+      expect(MagicBellRails.api_secret).to eq(api_secret)
+      expect(MagicBellRails.api_secret).to eq(api_secret)
     end
   end
 
@@ -46,12 +48,12 @@ describe MagicBellRails do
       end
     end
 
-    it "calculates the user key for the given user's email" do
-      expect(MagicBellRails.user_key(user_email)).to eq(MagicBellRails::HMAC.calculate(user_email, api_secret))
-    end
-
     after do
       MagicBellRails.reset_config
+    end
+
+    it "calculates the user key for the given user's email" do
+      expect(MagicBellRails.user_key(user_email)).to eq(MagicBellRails::HMAC.calculate(user_email, api_secret))
     end
   end
 end
