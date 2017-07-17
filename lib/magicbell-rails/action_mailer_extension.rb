@@ -24,5 +24,6 @@ module MagicBellRails
   
     def magicbell_notification_action_url(action_url)
       headers["X-MagicBell-Notification-ActionUrl"] = action_url
-    ende
+    end
+  end
 end
