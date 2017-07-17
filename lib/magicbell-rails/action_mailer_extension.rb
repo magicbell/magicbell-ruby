@@ -1,3 +1,5 @@
+require "json"
+
 module MagicBellRails
   module ActionMailerExtension
     def self.included(mailer_class)
