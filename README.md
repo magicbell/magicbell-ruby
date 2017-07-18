@@ -2,6 +2,8 @@
 
 This gem makes it easy to add [MagicBell's](https://magicbell.io/) notification center widget to your rails app.
 
+<img width="415" alt="magicbell notification center widget" src="https://user-images.githubusercontent.com/1789832/28327736-f3503f44-6c01-11e7-9a72-c15023db18c6.png">
+
 ## Installation
 
 Add the magicbell gem to your app's Gemfile
