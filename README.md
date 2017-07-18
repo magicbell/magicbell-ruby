@@ -6,7 +6,7 @@ This gem makes it easy to add [MagicBell's](https://magicbell.io/) notification 
 
 ## Installation
 
-Add the magicbell gem to your app's Gemfile
+Add the magicbell-rails gem to your app's Gemfile
 
 ```ruby
 gem "magicbell-rails"
