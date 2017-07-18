@@ -178,7 +178,7 @@ function initializeMagicBell() {
     onNotificationClick: function (notification) {
       // openComment is a function that you've defined in your app's javascript to open
       // and display a specific comment to the user
-      openComment(notification.get("metadata").comment_id)
+      openComment(notification.meta_data.comment_id)
     }
   });
 }
