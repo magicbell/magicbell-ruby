@@ -8,7 +8,9 @@ Gem::Specification.new do |s|
   s.files         = Dir["{lib}/**/*"] + ["README.md"]
 
   s.add_dependency("activesupport")
+  s.add_dependency("json")
   s.add_dependency("rails")
 
   s.add_development_dependency("rspec", "~> 3.0")
+  s.add_development_dependency("pry")
 end
