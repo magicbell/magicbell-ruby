@@ -17,12 +17,12 @@ module MagicBellRails
       @config = nil
     end
 
-    def widget_css_url
-      "//" + CLOUDFRONT_DOMAIN + '/magicbell.min.css'
+    def host_page_css_url
+      "//app.magicbell.io/assets/magicbell.css"
     end
 
     def widget_javascript_url
-      "//" + CLOUDFRONT_DOMAIN + '/magicbell.min.js'
+      "//#{CLOUDFRONT_DOMAIN}/widget.magicbell.js"
     end
 
     def api_key

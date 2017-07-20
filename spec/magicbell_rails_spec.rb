@@ -27,15 +27,15 @@ describe MagicBellRails do
     end
   end
 
-  describe ".widget_css_url" do
+  describe ".host_page_css_url" do
     it "returns the url to fetch magicbell widget's css from" do
-      expect(MagicBellRails.widget_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/magicbell.min.css")
+      expect(MagicBellRails.host_page_css_url).to eq("//app.magicbell.io/assets/magicbell.css")
     end
   end
 
   describe ".widget_javascript_url" do
     it "returns the url to fetch magicbell widget's javascript from" do
-      expect(MagicBellRails.widget_javascript_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/magicbell.min.js")
+      expect(MagicBellRails.widget_javascript_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/widget.magicbell.js")
     end
   end
 
