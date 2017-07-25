@@ -27,9 +27,15 @@ describe MagicBellRails do
     end
   end
 
+  describe ".extras_css_url" do
+    it "returns the url to magicbell's extras css" do
+      expect(MagicBellRails.extras_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/extras.magicbell.css")
+    end
+  end
+
   describe ".host_page_css_url" do
-    it "returns the url to fetch magicbell widget's css from" do
-      expect(MagicBellRails.host_page_css_url).to eq("//app.magicbell.io/assets/magicbell.css")
+    it "is an alias to .extras_css_url" do
+      expect(MagicBellRails.extras_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/extras.magicbell.css")
     end
   end
 

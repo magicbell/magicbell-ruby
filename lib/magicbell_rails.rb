@@ -17,9 +17,10 @@ module MagicBellRails
       @config = nil
     end
 
-    def host_page_css_url
-      "//app.magicbell.io/assets/magicbell.css"
+    def extras_css_url
+      "//#{CLOUDFRONT_DOMAIN}/extras.magicbell.css"
     end
+    alias_method :host_page_css_url, :extras_css_url # Backward compatibility
 
     def widget_javascript_url
       "//#{CLOUDFRONT_DOMAIN}/widget.magicbell.js"
