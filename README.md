@@ -38,7 +38,7 @@ If you haven't signed up for MagicBell yet and don't have credentials, visit htt
 Add MagicBell's icon to your app's interface. Our customers usually add MagicBell's icon to their app's navigation bar.
 
 ```html
-<div id="magicbell_notifications" style="display:inline-block">
+<div id="magicbell_notifications" style="display:inline-block;">
   <i class="icon-magicbell"></i>
 </div>
 ```
@@ -51,7 +51,7 @@ Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the 
   $('<link/>', {
     rel: 'stylesheet',
     type: 'text/css',
-    href: "<%= MagicBellRails.widget_css_url %>"
+    href: "<%= MagicBellRails.extras_css_url %>"
   }).appendTo('head');
   $(document).ready(function () {
     // Initialize the widget after fetching its javascript
