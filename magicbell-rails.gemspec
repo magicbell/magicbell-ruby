@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name          = "magicbell-rails"
   s.summary       = "Makes it easy to add magicbell.io widget to your rails app"
-  s.version       = "1.1"
+  s.version       = `cat VERSION`
   s.date          = "2016-07-13"
   s.authors       = ["Hana Mohan", "Nisanth Chunduru"]
   s.email         = ["hana@magicbell.io", "nisanth@magicbell.io"]
