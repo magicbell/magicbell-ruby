@@ -1,6 +1,7 @@
 require "magicbell_rails/config"
 require "magicbell_rails/hmac"
 
+
 module MagicBellRails
   CLOUDFRONT_DOMAIN = "dxd8ma9fvw6e2.cloudfront.net"
 
@@ -21,6 +22,10 @@ module MagicBellRails
       "//#{CLOUDFRONT_DOMAIN}/extras.magicbell.css"
     end
     alias_method :host_page_css_url, :extras_css_url # Backward compatibility
+
+    def api_host
+      config.api_host
+    end
 
     def widget_javascript_url
       "//#{CLOUDFRONT_DOMAIN}/widget.magicbell.js"

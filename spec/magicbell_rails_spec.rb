@@ -12,6 +12,7 @@ describe MagicBellRails do
         config.api_key = api_key
         config.api_secret = api_secret
         config.project_id = project_id
+        config.api_host = "https://api.example.com"
       end
     end
 
@@ -24,6 +25,7 @@ describe MagicBellRails do
       expect(MagicBellRails.api_key).to eq(api_key)
       expect(MagicBellRails.api_secret).to eq(api_secret)
       expect(MagicBellRails.api_secret).to eq(api_secret)
+      expect(MagicBellRails.api_host).to eq("https://api.example.com")
     end
   end
 
