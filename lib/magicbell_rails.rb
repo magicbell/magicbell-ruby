@@ -1,5 +1,6 @@
 require "magicbell_rails/config"
 require "magicbell_rails/hmac"
+require "magicbell_rails/user"
 
 
 module MagicBellRails
