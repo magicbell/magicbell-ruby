@@ -47,21 +47,4 @@ describe MagicBell do
     end
   end
 
-  describe ".user_key" do
-    let(:user_email) { "user@example.com" }
-
-    before do
-      MagicBell.configure do |config|
-        config.api_secret = api_secret
-      end
-    end
-
-    after do
-      MagicBell.reset_config
-    end
-
-    it "calculates the user key for the given user's email" do
-      expect(MagicBell.user_key(user_email)).to eq(MagicBell::HMAC.calculate(user_email, api_secret))
-    end
-  end
 end

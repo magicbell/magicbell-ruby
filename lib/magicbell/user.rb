@@ -20,5 +20,9 @@ module MagicBell
       response = @conn.get "/notifications.json"
       JSON.parse(response.body)["notifications"]
     end
+
+    def hmac_signature
+      MagicBell::HMAC.calculate @email
+    end
   end
 end
