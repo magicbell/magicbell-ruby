@@ -1,7 +1,9 @@
-require "magicbell_rails/config"
-require "magicbell_rails/hmac"
+require "magicbell/config"
+require "magicbell/hmac"
+require "magicbell/user"
 
-module MagicBellRails
+
+module MagicBell
   CLOUDFRONT_DOMAIN = "dxd8ma9fvw6e2.cloudfront.net"
 
   class << self
@@ -21,6 +23,10 @@ module MagicBellRails
       "//#{CLOUDFRONT_DOMAIN}/extras.magicbell.css"
     end
     alias_method :host_page_css_url, :extras_css_url # Backward compatibility
+
+    def api_host
+      config.api_host
+    end
 
     def widget_javascript_url
       "//#{CLOUDFRONT_DOMAIN}/widget.magicbell.js"
@@ -42,11 +48,18 @@ module MagicBellRails
       config.magic_address
     end
 
+    def project_specific_headers
+      {
+        'X-MAGICBELL-API-KEY' => config.api_key,
+        'X-MAGICBELL-API-SECRET' => config.api_secret
+      }
+    end
+
     # Calculate HMAC for user's email
     def user_key(user_email)
-      MagicBellRails::HMAC.calculate(user_email, MagicBellRails.api_secret)
+      MagicBell::HMAC.calculate(user_email, MagicBell.api_secret)
     end
   end
 end
 
-require "magicbell_rails/railtie"
+require "magicbell/railtie"

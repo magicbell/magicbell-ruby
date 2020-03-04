@@ -25,7 +25,7 @@ vim config/initializers/magicbell-rails.rb
 ```
 
 ```ruby
-MagicBellRails.configure do |config|
+MagicBell.configure do |config|
   config.api_key = "your_magicbell_api_key"
   config.api_secret = "your_magicbell_api_secret"
   config.project_id = 1 # your magicbell project id
@@ -51,19 +51,19 @@ Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the 
   $('<link/>', {
     rel: 'stylesheet',
     type: 'text/css',
-    href: "<%= MagicBellRails.extras_css_url %>"
+    href: "<%= MagicBell.extras_css_url %>"
   }).appendTo('head');
   $(document).ready(function () {
     // Initialize the widget after fetching its javascript
-    $.getScript("<%= MagicBellRails.widget_javascript_url %>", initializeMagicBell);
+    $.getScript("<%= MagicBell.widget_javascript_url %>", initializeMagicBell);
   });
   function initializeMagicBell() {
     MagicBell.initialize({
       target: document.getElementById('magicbell_notifications'),
-      projectId: "<%= MagicBellRails.project_id %>",
-      apiKey: "<%= MagicBellRails.api_key %>",
+      projectId: "<%= MagicBell.project_id %>",
+      apiKey: "<%= MagicBell.api_key %>",
       userEmail: "<%= current_user.email %>",
-      userKey: "<%= MagicBellRails.user_key(current_user.email) %>"
+      userKey: "<%= MagicBell.user_key(current_user.email) %>"
     });
   }
 </script>
@@ -173,10 +173,10 @@ When initializing the widget, pass a `onNotificationClick` callback to customize
 function initializeMagicBell() {
   MagicBell.initialize({
     target: document.getElementById('magicbell_notifications'),
-    projectId: "<%= MagicBellRails.project_id %>",
-    apiKey: "<%= MagicBellRails.api_key %>",
+    projectId: "<%= MagicBell.project_id %>",
+    apiKey: "<%= MagicBell.api_key %>",
     userEmail: <%= current_user.email %>,
-    userKey: "<%= MagicBellRails.user_key(current_user.email) %>",
+    userKey: "<%= MagicBell.user_key(current_user.email) %>",
     onNotificationClick: function (notification) {
       // openComment is a function that you've defined in your app's javascript to open
       // and display a specific comment to the user

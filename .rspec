@@ -1,3 +1,3 @@
 --require spec_helper
---require magicbell-rails
+--require magicbell
 --require pry

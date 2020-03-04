@@ -1,2 +1,2 @@
-gem build magicbell-rails.gemspec
-gem push magicbell-rails-$(cat VERSION).gem
+gem build magicbell.gemspec
+gem push magicbell-$(cat VERSION).gem
