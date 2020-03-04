@@ -48,6 +48,13 @@ module MagicBellRails
       config.magic_address
     end
 
+    def project_specific_headers
+      {
+        'X-MAGICBELL-API-KEY' => config.api_key,
+        'X-MAGICBELL-API-KEY' => config.api_secret
+      }
+    end
+
     # Calculate HMAC for user's email
     def user_key(user_email)
       MagicBellRails::HMAC.calculate(user_email, MagicBellRails.api_secret)

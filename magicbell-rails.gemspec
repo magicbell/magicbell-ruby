@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.add_dependency("activesupport")
   s.add_dependency("json")
   s.add_dependency("rails")
+  s.add_dependency("faraday")
 
   s.add_development_dependency("rspec", "~> 3.0")
   s.add_development_dependency("pry")

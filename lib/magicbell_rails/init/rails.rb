@@ -1,8 +1,6 @@
 require 'rails'
 require 'yaml'
 
-require 'honeybadger/ruby'
-
 module MagicBell
   module Init
     module Rails
