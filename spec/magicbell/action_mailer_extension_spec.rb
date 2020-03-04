@@ -1,13 +1,13 @@
 require "action_mailer"
 
-describe MagicBellRails::ActionMailerExtension do
+describe MagicBell::ActionMailerExtension do
   describe "Helper methods" do
     let(:custom_action_url) { "https://myapp.com/comments/1" }
     let(:metadata) { { comment_id: 1 } }
     let(:custom_title) { "I'd like to have a title that is different from the email's subject" }
     let(:notification_mailer) {
       Class.new(ActionMailer::Base) do
-        include MagicBellRails::ActionMailerExtension
+        include MagicBell::ActionMailerExtension
 
         ring_the_magicbell
 
@@ -38,13 +38,13 @@ describe MagicBellRails::ActionMailerExtension do
     }
 
     before(:each) do
-      MagicBellRails.configure do |config|
+      MagicBell.configure do |config|
         config.magic_address = "dummy_magic_address@ring.magicbell.io"
       end
     end
 
     after(:each) do
-      MagicBellRails.reset_config
+      MagicBell.reset_config
     end
 
     describe ".ring_the_magicbell" do

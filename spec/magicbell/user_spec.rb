@@ -1,6 +1,6 @@
-describe MagicBellRails::User do
+describe MagicBell::User do
 
-    let(:user) { MagicBellRails::User.new(email: 'hana@magicbell.io') }
+    let(:user) { MagicBell::User.new(email: 'hana@magicbell.io') }
     it "should be not throw an error on init" do
       expect(user.email).to eq 'hana@magicbell.io'
     end
@@ -11,7 +11,7 @@ describe MagicBellRails::User do
       let(:conn)   { Faraday.new { |b| b.adapter(:test, stubs) } }
 
       before(:each) do 
-        MagicBellRails.configure do |config|
+        MagicBell.configure do |config|
           config.api_key = 'magicbell_api_key'
         end
       end

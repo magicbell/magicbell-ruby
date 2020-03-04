@@ -1,9 +1,9 @@
-require "magicbell_rails/config"
-require "magicbell_rails/hmac"
-require "magicbell_rails/user"
+require "magicbell/config"
+require "magicbell/hmac"
+require "magicbell/user"
 
 
-module MagicBellRails
+module MagicBell
   CLOUDFRONT_DOMAIN = "dxd8ma9fvw6e2.cloudfront.net"
 
   class << self
@@ -51,15 +51,15 @@ module MagicBellRails
     def project_specific_headers
       {
         'X-MAGICBELL-API-KEY' => config.api_key,
-        'X-MAGICBELL-API-KEY' => config.api_secret
+        'X-MAGICBELL-API-SECRET' => config.api_secret
       }
     end
 
     # Calculate HMAC for user's email
     def user_key(user_email)
-      MagicBellRails::HMAC.calculate(user_email, MagicBellRails.api_secret)
+      MagicBell::HMAC.calculate(user_email, MagicBell.api_secret)
     end
   end
 end
 
-require "magicbell_rails/railtie"
+require "magicbell/railtie"

@@ -1,6 +1,6 @@
 require "json"
 
-module MagicBellRails
+module MagicBell
   module ActionMailerExtension
     def self.included(mailer_class)
       mailer_class.send :extend, ClassMethods
@@ -8,7 +8,7 @@ module MagicBellRails
 
     module ClassMethods
       def ring_the_magicbell
-        default bcc: MagicBellRails.magic_address
+        default bcc: MagicBell.magic_address
       end
     end
 

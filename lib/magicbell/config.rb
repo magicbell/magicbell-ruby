@@ -1,4 +1,4 @@
-module MagicBellRails
+module MagicBell
   class Config
     attr_accessor :api_key
     attr_accessor :api_secret

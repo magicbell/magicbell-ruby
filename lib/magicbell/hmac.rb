@@ -1,7 +1,7 @@
 require "openssl"
 require "base64"
 
-module MagicBellRails
+module MagicBell
   module HMAC
     class << self
       def calculate(message, secret)

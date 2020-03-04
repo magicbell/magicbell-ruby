@@ -1,4 +1,4 @@
-describe MagicBellRails do
+describe MagicBell do
   let(:api_secret) { "dummy_api_secret" }
 
   describe ".configure" do
@@ -7,7 +7,7 @@ describe MagicBellRails do
     let(:project_id) { 1 }
 
     before do
-      MagicBellRails.configure do |config|
+      MagicBell.configure do |config|
         config.magic_address = magic_address
         config.api_key = api_key
         config.api_secret = api_secret
@@ -17,33 +17,33 @@ describe MagicBellRails do
     end
 
     after do
-      MagicBellRails.reset_config
+      MagicBell.reset_config
     end
 
     it "configures the gem" do
-      expect(MagicBellRails.magic_address).to eq(magic_address)
-      expect(MagicBellRails.api_key).to eq(api_key)
-      expect(MagicBellRails.api_secret).to eq(api_secret)
-      expect(MagicBellRails.api_secret).to eq(api_secret)
-      expect(MagicBellRails.api_host).to eq("https://api.example.com")
+      expect(MagicBell.magic_address).to eq(magic_address)
+      expect(MagicBell.api_key).to eq(api_key)
+      expect(MagicBell.api_secret).to eq(api_secret)
+      expect(MagicBell.api_secret).to eq(api_secret)
+      expect(MagicBell.api_host).to eq("https://api.example.com")
     end
   end
 
   describe ".extras_css_url" do
     it "returns the url to magicbell's extras css" do
-      expect(MagicBellRails.extras_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/extras.magicbell.css")
+      expect(MagicBell.extras_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/extras.magicbell.css")
     end
   end
 
   describe ".host_page_css_url" do
     it "is an alias to .extras_css_url" do
-      expect(MagicBellRails.extras_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/extras.magicbell.css")
+      expect(MagicBell.extras_css_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/extras.magicbell.css")
     end
   end
 
   describe ".widget_javascript_url" do
     it "returns the url to fetch magicbell widget's javascript from" do
-      expect(MagicBellRails.widget_javascript_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/widget.magicbell.js")
+      expect(MagicBell.widget_javascript_url).to eq("//dxd8ma9fvw6e2.cloudfront.net/widget.magicbell.js")
     end
   end
 
@@ -51,17 +51,17 @@ describe MagicBellRails do
     let(:user_email) { "user@example.com" }
 
     before do
-      MagicBellRails.configure do |config|
+      MagicBell.configure do |config|
         config.api_secret = api_secret
       end
     end
 
     after do
-      MagicBellRails.reset_config
+      MagicBell.reset_config
     end
 
     it "calculates the user key for the given user's email" do
-      expect(MagicBellRails.user_key(user_email)).to eq(MagicBellRails::HMAC.calculate(user_email, api_secret))
+      expect(MagicBell.user_key(user_email)).to eq(MagicBell::HMAC.calculate(user_email, api_secret))
     end
   end
 end
