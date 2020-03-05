@@ -1,3 +1,5 @@
+require 'active_support'
+
 describe MagicBell::User do
 
     let(:user) { MagicBell::User.new(email: 'hana@magicbell.io') }
@@ -33,8 +35,17 @@ describe MagicBell::User do
         stubs.verify_stubbed_calls
       end
 
-      it "should fetch preferences do the user" do
-        #expect(user.preferences).to eq {notification_preferences: {new_ticket: {in_app: true}}}
+      it "should fetch preferences of the user" do
+        stubs.get("/notification_preferences.json") do |env|
+          [
+            200,
+            Hash.new,
+            '{"notification_preferences":{"new_ticket":{"email":false,"in_app":true}}}'
+          ]
+        end
+        allow(Faraday).to receive(:new).and_return(conn)
+        expect(user.notification_preferences).to eq( {"new_ticket"=>{"email"=>false, "in_app"=>true}})
+        stubs.verify_stubbed_calls
       end
 
       xit "should set the notification preferences" do

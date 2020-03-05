@@ -13,5 +13,6 @@ Gem::Specification.new do |s|
   s.add_dependency("faraday")
 
   s.add_development_dependency("rspec", "~> 3.0")
+  s.add_development_dependency("activesupport")
   s.add_development_dependency("pry")
 end
