@@ -1,35 +1,12 @@
 describe MagicBell::User do
 
-    before(:each) do 
-      MagicBell.configure do |config|
-        config.magic_address = magic_address
-        config.api_key = api_key
-        config.api_secret = api_secret
-        config.project_id = project_id
-        config.api_host = "https://api.example.com"
-      end
-    end
-
     let(:user) { MagicBell::User.new(email: 'hana@magicbell.io') }
-    let(:api_key) { "dummy_api_key" }
-    let(:magic_address) { "dummy_magic_address@ring.magicbell.io" }
-    let(:api_secret) { "dummy_api_secret" }
-    let(:project_id) { 1 }
 
     it "should be not throw an error on init" do
       expect(user.email).to eq 'hana@magicbell.io'
     end
 
     describe ".user_key" do
-      before do
-        MagicBell.configure do |config|
-          config.api_secret = api_secret
-        end
-      end
-
-      after do
-        MagicBell.reset_config
-      end
 
       it "calculates the user key for the given user's email" do
         expect(user.hmac_signature).to eq 'JOOgQ6zGwBwZDGfRN39ZMZGSVx9BwTOpY6B5lbWO6u0='
@@ -56,7 +33,7 @@ describe MagicBell::User do
         stubs.verify_stubbed_calls
       end
 
-      xit "should fetch preferences do the user" do
+      it "should fetch preferences do the user" do
         #expect(user.preferences).to eq {notification_preferences: {new_ticket: {in_app: true}}}
       end
 
