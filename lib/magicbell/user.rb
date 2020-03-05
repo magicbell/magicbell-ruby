@@ -31,5 +31,10 @@ module MagicBell
       JSON.parse(response.body)["notification_preferences"]
     end
     
+    def notification_preferences=(preferences)
+       @conn.put "/notification_preferences.json", 
+                    {notification_preferences: preferences}
+    end
+    
   end
 end

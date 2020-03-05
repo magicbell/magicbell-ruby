@@ -48,8 +48,13 @@ describe MagicBell::User do
         stubs.verify_stubbed_calls
       end
 
-      xit "should set the notification preferences" do
-        #user.preferences.set({notification_preferences: {new_ticket: {in_app: true}}})
+      it "should set the notification preferences" do
+        stubs.put("/notification_preferences.json",
+          {:notification_preferences=>{"new_ticket"=>{"email"=>false, "in_app"=>true}}}
+          ) {|env| [200, Hash.new, '']}
+        allow(Faraday).to receive(:new).and_return(conn)
+        user.notification_preferences = {"new_ticket"=>{"email"=>false, "in_app"=>true}}
+        stubs.verify_stubbed_calls
       end
     end
 end
