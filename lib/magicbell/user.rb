@@ -4,6 +4,7 @@ module MagicBell
   class User
 
     attr_accessor :email
+    attr_accessor :preferences
     
     def initialize(attributes)
       @attributes = attributes
@@ -24,5 +25,16 @@ module MagicBell
     def hmac_signature
       MagicBell::HMAC.calculate @email
     end
+
+    def notification_preferences
+      response = @conn.get "/notification_preferences.json"
+      JSON.parse(response.body)["notification_preferences"]
+    end
+    
+    def notification_preferences=(preferences)
+       @conn.put "/notification_preferences.json", 
+                    {notification_preferences: preferences}
+    end
+    
   end
 end

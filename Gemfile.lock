@@ -160,6 +160,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   magicbell!
   pry
   rspec (~> 3.0)

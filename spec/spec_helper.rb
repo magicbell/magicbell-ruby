@@ -97,4 +97,18 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.before(:all) do 
+    MagicBell.configure do |config|
+      config.magic_address = "dummy_magic_address@ring.magicbell.io"
+      config.api_key = "dummy_api_key"
+      config.api_secret = "dummy_api_secret"
+      config.project_id = 1
+      config.api_host = "https://api.example.com"
+    end
+  end
+
+  config.after(:all) do
+    MagicBell.reset_config
+  end
 end
