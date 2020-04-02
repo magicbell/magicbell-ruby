@@ -16,6 +16,12 @@ jobs:
           - 2.5
           - 2.6
           - 2.7
+        gemfile:
+          - Gemfile
+          - gemfiles/Gemfile.rails-4.2.x
+          - gemfiles/Gemfile.rails-5.0.x
+          - gemfiles/Gemfile.rails-5.1.x
+          - gemfiles/Gemfile.rails-5.2.x
     name: Run gem tests
     steps:
       - uses: actions/checkout@v2
@@ -33,6 +39,7 @@ jobs:
       - name: Install gems
         run: |
           bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
+          bundle install --gemfile=${{ matrix.gemfile }} \
+                         --jobs 4 --retry 3
       - name: Run tests
         run: bundle exec rspec
