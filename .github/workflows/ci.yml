@@ -39,7 +39,7 @@ jobs:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}
           restore-keys: |
-            ${{ runner.os }}-gems-
+            ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}
       - name: Install bundler 1.17.3
         run: gem install bundler -v 1.17.3
       - name: Install gems
