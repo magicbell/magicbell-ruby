@@ -1,3 +1,2 @@
 --require spec_helper
 --require magicbell
---require pry

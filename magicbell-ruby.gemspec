@@ -1,18 +1,24 @@
+$:.push File.expand_path("lib", __dir__)
+
+# Maintain your gem's version:
+require "magicbell/version"
+
+# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name          = "magicbell"
-  s.summary       = "Ruby wrapper for MagicBell.io"
-  s.version       = `cat VERSION`
-  s.date          = "2020-03-03"
+  s.version       = MagicBell::VERSION
   s.authors       = ["Hana Mohan", "Nisanth Chunduru"]
   s.email         = ["hana@magicbell.io", "nisanth@supportbee.com"]
-  s.files         = Dir["{lib}/**/*"] + ["README.md"]
+  s.homepage      = "https://magicbell.io"
+  s.summary       = "Ruby wrapper for MagicBell.io"
+  s.description   = "Notifications like never before!"
+  s.license       = "MIT"
 
-  s.add_dependency("activesupport")
-  s.add_dependency("json")
-  s.add_dependency("rails")
-  s.add_dependency("faraday")
+  s.files = Dir["{lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_development_dependency("rspec", "~> 3.0")
-  s.add_development_dependency("activesupport")
-  s.add_development_dependency("pry")
+  s.add_dependency 'activesupport'
+  s.add_dependency 'faraday'
+
+  s.add_development_dependency "rails", "~> 6.0.2", ">= 6.0.2.1"
+  s.add_development_dependency "rspec", '~> 3.9'
 end
