@@ -4,7 +4,8 @@ require "magicbell/user"
 
 
 module MagicBell
-  CLOUDFRONT_DOMAIN = "dxd8ma9fvw6e2.cloudfront.net"
+  WIDGET_JAVASCRIPT_URL = "https://assets.magicbell.io/widget.magicbell.js"
+  EXTRAS_CSS_URL = "https://assets.magicbell.io/extras.magicbell.css"
 
   class << self
     def configure
@@ -19,17 +20,8 @@ module MagicBell
       @config = nil
     end
 
-    def extras_css_url
-      "//#{CLOUDFRONT_DOMAIN}/extras.magicbell.css"
-    end
-    alias_method :host_page_css_url, :extras_css_url # Backward compatibility
-
     def api_host
       config.api_host
-    end
-
-    def widget_javascript_url
-      "//#{CLOUDFRONT_DOMAIN}/widget.magicbell.js"
     end
 
     def api_key
