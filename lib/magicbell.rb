@@ -1,6 +1,7 @@
 require "magicbell/config"
 require "magicbell/hmac"
 require "magicbell/user"
+require "magicbell/railtie" if defined?(Rails)
 
 
 module MagicBell
@@ -53,5 +54,3 @@ module MagicBell
     end
   end
 end
-
-require "magicbell/railtie"
