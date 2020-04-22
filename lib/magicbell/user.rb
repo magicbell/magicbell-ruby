@@ -1,4 +1,5 @@
 require 'faraday'
+require 'json'
 
 module MagicBell
   class User

@@ -1,4 +1,5 @@
 require "action_mailer"
+require "magicbell/action_mailer_extension"
 
 describe MagicBell::ActionMailerExtension do
   describe "Helper methods" do
