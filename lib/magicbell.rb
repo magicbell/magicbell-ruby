@@ -2,6 +2,7 @@ require "magicbell/config"
 require "magicbell/hmac"
 require "magicbell/user"
 require "magicbell/railtie" if defined?(Rails)
+require "magicbell/client"
 
 require 'forwardable'
 
