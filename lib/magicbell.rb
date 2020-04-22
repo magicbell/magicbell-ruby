@@ -3,12 +3,18 @@ require "magicbell/hmac"
 require "magicbell/user"
 require "magicbell/railtie" if defined?(Rails)
 
+require 'forwardable'
+
 
 module MagicBell
   WIDGET_JAVASCRIPT_URL = "https://assets.magicbell.io/widget.magicbell.js"
   EXTRAS_CSS_URL = "https://assets.magicbell.io/extras.magicbell.css"
 
   class << self
+    extend Forwardable
+
+    def_delegators :@config, :api_key, :api_secret, :project_id, :magic_address, :api_host
+
     def configure
       yield(config)
     end
@@ -19,26 +25,6 @@ module MagicBell
 
     def reset_config
       @config = nil
-    end
-
-    def api_host
-      config.api_host
-    end
-
-    def api_key
-      config.api_key
-    end
-
-    def api_secret
-      config.api_secret
-    end
-
-    def project_id
-      config.project_id
-    end
-
-    def magic_address
-      config.magic_address
     end
 
     def project_specific_headers
