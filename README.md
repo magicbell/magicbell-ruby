@@ -6,10 +6,10 @@ Convert your email notifications to an in-app notification center. This gem make
 
 ## Installation
 
-Add the magicbell-rails gem to your app's Gemfile
+Add the magicbell gem to your app's Gemfile
 
 ```ruby
-gem "magicbell-rails"
+gem "magicbell"
 ```
 
 Run
@@ -18,10 +18,10 @@ Run
 bundle install
 ```
 
-Create the initializer file `config/initializers/magicbell-rails.rb` and add your MagicBell credentials there.
+Create the initializer file `config/initializers/magicbell.rb` and add your MagicBell credentials there.
 
 ```
-vim config/initializers/magicbell-rails.rb
+vim config/initializers/magicbell.rb
 ```
 
 ```ruby
@@ -51,11 +51,11 @@ Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the 
   $('<link/>', {
     rel: 'stylesheet',
     type: 'text/css',
-    href: "<%= MagicBell.extras_css_url %>"
+    href: "<%= MagicBell::EXTRAS_CSS_URL %>"
   }).appendTo('head');
   $(document).ready(function () {
     // Initialize the widget after fetching its javascript
-    $.getScript("<%= MagicBell.widget_javascript_url %>", initializeMagicBell);
+    $.getScript("<%= MagicBell::WIDGET_JAVASCRIPT_URL %>", initializeMagicBell);
   });
   function initializeMagicBell() {
     MagicBell.initialize({
@@ -186,8 +186,8 @@ function initializeMagicBell() {
 }
 ```
 
-If you'd like us to add more callbacks to the widget, reach out to us at hana@supportbee.com
+If you'd like us to add more callbacks to the widget, reach out to us at hana@magicbell.io
 
 ## Documentation
 
-Visit our [Docs Site](https://magicbell.supportbee.com/149-magicbell-s-help-docs) for more information on MagicBell, MagicBell's widget and Advanced Features.
+Visit our [Docs Site](https://docs.magicbell.io) for more information on MagicBell, MagicBell's widget and Advanced Features.
