@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activesupport'
   s.add_dependency 'faraday'
-  s.add_dependency 'jwt'
 
   s.add_development_dependency "rails"
   s.add_development_dependency "rspec", '~> 3.9'

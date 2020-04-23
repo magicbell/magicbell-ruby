@@ -191,19 +191,18 @@ function initializeMagicBell() {
 
 ### Creating a notification
 
-As a workspace member, you can create notifications for recipients. Once `MagicBell`
-is configured, you can call `create_notification` method to create a notification
-for a given project.
+You can create notifications for users. Once `MagicBell` is configured, you can
+call `create_notification` method to create a notification for a given project.
 
 ```
 params = {
-  to: "recipient@example.com",
+  to: "user@example.com",
   title: "Your download is ready",
   content: "Zip file to download is here",
   action_url: "https://example.com/notifications/1"
 }
 
-client = MagicBell::Client.new("your-email@example.com", "member")
+client = MagicBell::Client.new()
 client.create_notification(params)
 ```
 
