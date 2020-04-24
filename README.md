@@ -195,15 +195,10 @@ You can create notifications for users. Once `MagicBell` is configured, you can
 call `create_notification` method to create a notification for a given project.
 
 ```
-params = {
-  to: "user@example.com",
-  title: "Your download is ready",
-  content: "Zip file to download is here",
-  action_url: "https://example.com/notifications/1"
-}
-
 client = MagicBell::Client.new()
-client.create_notification(params)
+client.create_notification("user@example.com", "Your download is ready",
+                           "Zip file to download is here",
+                           "https://example.com/notifications/1")
 ```
 
 The response will be a Faraday response object, and methods like `status` and
