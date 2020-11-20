@@ -13,7 +13,11 @@ module MagicBell
   class << self
     extend Forwardable
 
-    def_delegators :@config, :api_key, :api_secret, :project_id, :magic_address, :api_host
+    def_delegators :@config, :api_key,
+                             :api_secret,
+                             :project_id,
+                             :magic_address,
+                             :api_host
 
     def configure
       yield(config)
