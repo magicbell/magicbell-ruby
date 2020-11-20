@@ -3,19 +3,18 @@ require 'json'
 
 module MagicBell
   class User
-
     attr_accessor :email
     attr_accessor :preferences
     
     def initialize(attributes)
       @attributes = attributes
       @email = @attributes[:email]
-      @conn = Faraday.new({
+      @conn = Faraday.new(
         url: MagicBell.api_host, 
         headers: MagicBell.project_specific_headers.merge(
           'X-MAGICBELL-USER-EMAIL' => @email
         )
-      })
+      )
     end
 
     def notifications
@@ -24,7 +23,7 @@ module MagicBell
     end
 
     def hmac_signature
-      MagicBell::HMAC.calculate @email
+      MagicBell::HMAC.calculate(@email)
     end
 
     def notification_preferences
@@ -33,9 +32,7 @@ module MagicBell
     end
     
     def notification_preferences=(preferences)
-       @conn.put "/notification_preferences.json", 
-                    {notification_preferences: preferences}
+       @conn.put "/notification_preferences.json", { notification_preferences: preferences }
     end
-    
   end
 end

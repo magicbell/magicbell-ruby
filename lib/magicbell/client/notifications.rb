@@ -8,11 +8,16 @@ module MagicBell
       # @param content [String] Content of the notification
       # @param action_url [String] Url to redirect to from widget
       def create_notification(to, title, content, action_url)
-        params = {to: to, title: title, content: content, action_url: action_url}
+        params = {
+          to: to,
+          title: title,
+          content: content,
+          action_url: action_url
+        }
 
         connection.post("/notifications.json") do |req|
-          req.headers = {"X-MAGICBELL-API-SECRET" => MagicBell.api_secret}
-          req.body = {notification: params}
+          req.headers = { "X-MAGICBELL-API-SECRET" => MagicBell.api_secret }
+          req.body = { notification: params }
         end
       end
     end

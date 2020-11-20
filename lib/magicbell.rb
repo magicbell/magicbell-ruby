@@ -6,7 +6,6 @@ require "magicbell/client"
 
 require 'forwardable'
 
-
 module MagicBell
   WIDGET_JAVASCRIPT_URL = "https://assets.magicbell.io/widget.magicbell.js"
   EXTRAS_CSS_URL = "https://assets.magicbell.io/extras.magicbell.css"
