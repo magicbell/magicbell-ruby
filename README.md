@@ -1,4 +1,4 @@
-# magicbell-rails
+# magicbell
 
 Convert your email notifications to an in-app notification center. This gem makes it easy to add [MagicBell's](https://magicbell.io/) notification center widget to your rails app.
 
@@ -34,6 +34,8 @@ end
 ```
 
 If you haven't signed up for MagicBell yet and don't have credentials, visit https://magicbell.io/, sign in with your google account and create a Project.
+
+### Add MagicBell's embeddable to your Rails app
 
 Add MagicBell's icon to your app's interface. Our customers usually add MagicBell's icon to their app's navigation bar.
 
@@ -81,6 +83,35 @@ Render the `_magicbell.html.erb` partial in your app's layout. Say, your app's l
 </html>
 ```
 
+Deploy your app.
+
+That's it! All your users now benefit from having in-app notifications.
+
+If you've trouble adding MagicBell to your app or find yourself stuck, please don't hestitate to reach out to us at hana@magicbell.io We usually respond within 24 hours (often much lesser).
+
+### Create a notification
+
+You can create notifications for users. Once `MagicBell` is configured, you can
+call `create_notification` method to create a notification for a given project.
+
+```
+client = MagicBell::Client.new
+client.create_notification("user@example.com", "Your download is ready",
+                           "Zip file to download is here",
+                           "https://example.com/notifications/1")
+```
+
+The response will be a Faraday response object, and methods like `status` and
+`body` will be available for further inspection.
+
+
+If you'd like us to add more callbacks to the widget, reach out to us at hana@magicbell.io
+
+
+## Advanced features
+
+### Convert your existing email notifications to n-app notifications
+
 Now, call the `ring_the_magicbell` method in your notification mailers. Here's an example
 
 ```ruby
@@ -103,15 +134,9 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-Deploy your app.
+## Customization
 
-That's it! All your users now benefit from having in-app notifications.
-
-If you've trouble adding MagicBell to your app or find yourself stuck, please don't hestitate to reach out to us at hana@magicbell.io We usually respond within 24 hours (often much lesser).
-
-## Advanced Features
-
-#### ActionUrl
+### Action URL
 
 When a user clicks on a notification in MagicBell's widget, the widget redirects the user to the first URL the body of the email notification. We call this URL the `ActionUrl`.
 
@@ -129,7 +154,7 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-#### Title
+### Title
 
 We use the subject of the email notification as a notification's title. If this behaviour isn't sutiable for your app, you can set a custom title in your mailers
 
@@ -145,7 +170,7 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-#### Metadata
+### Metadata
 
 Its possible to attach custom metadata to every notification. Say you wish to attach a comment's id to a new comment notification, here's how it can be done
 
@@ -163,7 +188,7 @@ end
 
 You can later use this metadata to customize the behaviour of MagicBell's widget.
 
-#### Customize widget behaviour
+### Customize widget behaviour
 
 When a user clicks on a notification in MagicBell's widget, the widget redirects the user to the notification's `ActionUrl`. If this behaviour isn't suitable for your app (if your app is a Single Page Application for example), you can customize it.
 
@@ -185,27 +210,6 @@ function initializeMagicBell() {
   });
 }
 ```
-
-
-## Managing notifications
-
-### Creating a notification
-
-You can create notifications for users. Once `MagicBell` is configured, you can
-call `create_notification` method to create a notification for a given project.
-
-```
-client = MagicBell::Client.new()
-client.create_notification("user@example.com", "Your download is ready",
-                           "Zip file to download is here",
-                           "https://example.com/notifications/1")
-```
-
-The response will be a Faraday response object, and methods like `status` and
-`body` will be available for further inspection.
-
-
-If you'd like us to add more callbacks to the widget, reach out to us at hana@magicbell.io
 
 ## Documentation
 
