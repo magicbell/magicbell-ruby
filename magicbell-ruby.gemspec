@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
 
   # s.add_development_dependency "rails"
   s.add_development_dependency "rspec", '~> 3.9'
-  s.add_development_dependency "pry"
   s.add_development_dependency "webmock"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "rake"
 end

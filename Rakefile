@@ -25,3 +25,9 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task default: :test
+
+task :console do
+  require_relative "lib/magicbell"
+  require "pry"
+  binding.pry
+end
