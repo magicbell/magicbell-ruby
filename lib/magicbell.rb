@@ -20,8 +20,7 @@ module MagicBell
 
     def_delegators :config, :api_key,
                             :api_secret,
-                            :project_id,
-                            :magic_address,
+                            :bcc_email,
                             :api_host
 
     def configure
