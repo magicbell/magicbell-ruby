@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty'
   s.add_dependency 'activesupport'
 
-  # s.add_development_dependency "rails"
+  s.add_development_dependency "actionmailer"
   s.add_development_dependency "rspec", '~> 3.9'
   s.add_development_dependency "webmock"
   s.add_development_dependency "pry"
