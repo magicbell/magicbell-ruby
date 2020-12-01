@@ -1,8 +1,12 @@
 require "magicbell/config"
 require "magicbell/hmac"
-require "magicbell/user"
+
 require "httparty"
+require "magicbell/api_resource"
+require "magicbell/user"
+require "magicbell/api_resources/notification"
 require "magicbell/client"
+
 require "magicbell/railtie" if defined?(Rails)
 
 require 'forwardable'
