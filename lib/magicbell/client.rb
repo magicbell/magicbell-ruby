@@ -1,13 +1,26 @@
-require "magicbell/client/notifications"
-
 module MagicBell
   class Client
-    include MagicBell::Client::Notifications
+    def api_url
+      "https://api.magicbell.io"
+    end
 
-    # Returns an authenticated connection object which can be
-    # used to make requests
-    def connection
-      @connection ||= Faraday.new(url: MagicBell.api_host)
+    def create_notification(notification_params)
+      headers = {
+        "X-MAGICBELL-API-KEY" => MagicBell.api_key,
+        "X-MAGICBELL-API-SECRET" => MagicBell.api_secret
+      }
+      body = { notification: notification_params }.to_json
+      HTTParty.post(
+        notifications_url,
+        headers: headers,
+        body: body
+      )
+    end
+
+    private
+
+    def notifications_url
+      api_url + "/notifications"
     end
   end
 end

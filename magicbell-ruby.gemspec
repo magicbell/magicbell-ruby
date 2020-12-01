@@ -16,9 +16,11 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
+  s.add_dependency 'httparty'
   s.add_dependency 'activesupport'
-  s.add_dependency 'faraday'
 
-  s.add_development_dependency "rails"
+  # s.add_development_dependency "rails"
   s.add_development_dependency "rspec", '~> 3.9'
+  s.add_development_dependency "pry"
+  s.add_development_dependency "webmock"
 end

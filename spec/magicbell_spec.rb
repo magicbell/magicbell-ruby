@@ -12,7 +12,6 @@ describe MagicBell do
         config.api_key = api_key
         config.api_secret = api_secret
         config.project_id = project_id
-        config.api_host = "https://api.example.com"
       end
     end
 
