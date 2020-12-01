@@ -3,7 +3,7 @@ require "magicbell/hmac"
 
 require "httparty"
 require "magicbell/api_resource"
-require "magicbell/user"
+require "magicbell/api_resources/user"
 require "magicbell/api_resources/notification"
 require "magicbell/client"
 
@@ -18,11 +18,11 @@ module MagicBell
   class << self
     extend Forwardable
 
-    def_delegators :@config, :api_key,
-                             :api_secret,
-                             :project_id,
-                             :magic_address,
-                             :api_host
+    def_delegators :config, :api_key,
+                            :api_secret,
+                            :project_id,
+                            :magic_address,
+                            :api_host
 
     def configure
       yield(config)
@@ -33,18 +33,11 @@ module MagicBell
     end
 
     def reset_config
-      @config = nil
-    end
-
-    def project_specific_headers
-      {
-        'X-MAGICBELL-API-KEY' => config.api_key,
-        'X-MAGICBELL-API-SECRET' => config.api_secret
-      }
+      @config = Config.new
     end
 
     # Calculate HMAC for user's email
-    def user_key(user_email)
+    def user_email_hmac(user_email)
       MagicBell::HMAC.calculate(user_email, MagicBell.api_secret)
     end
   end

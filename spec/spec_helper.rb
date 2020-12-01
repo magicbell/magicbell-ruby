@@ -101,13 +101,13 @@ RSpec.configure do |config|
 =end
 
   config.before(:all) do 
-    MagicBell.configure do |config|
-      config.magic_address = "dummy_magic_address@ring.magicbell.io"
-      config.api_key = "dummy_api_key"
-      config.api_secret = "dummy_api_secret"
-      config.project_id = 1
-      config.api_host = "https://api.example.com"
-    end
+    # MagicBell.configure do |config|
+    #   config.magic_address = "dummy_magic_address@ring.magicbell.io"
+    #   config.api_key = "dummy_api_key"
+    #   config.api_secret = "dummy_api_secret"
+    #   config.project_id = 1
+    #   config.api_host = "https://api.example.com"
+    # end
 
     WebMock.disable! # Disable webmock in case someone forgets to do it in a spec
   end
