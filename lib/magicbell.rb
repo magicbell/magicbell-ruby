@@ -1,5 +1,9 @@
+require 'forwardable'
+
+require "openssl"
+require "base64"
+
 require "magicbell/config"
-require "magicbell/hmac"
 
 require "httparty"
 require "magicbell/api_resource"
@@ -8,8 +12,6 @@ require "magicbell/api_resources/notification"
 require "magicbell/client"
 
 require "magicbell/railtie" if defined?(Rails)
-
-require 'forwardable'
 
 module MagicBell
   WIDGET_JAVASCRIPT_URL = "https://assets.magicbell.io/widget.magicbell.js"
@@ -36,8 +38,17 @@ module MagicBell
     end
 
     # Calculate HMAC for user's email
-    def user_email_hmac(user_email)
-      MagicBell::HMAC.calculate(user_email, MagicBell.api_secret)
+    def hmac(message)
+      digest = sha256_digest
+      secret = api_secret
+
+      Base64.encode64(OpenSSL::HMAC.digest(digest, secret, message)).strip
+    end
+
+    private
+
+    def sha256_digest
+      OpenSSL::Digest::Digest.new('sha256')
     end
   end
 end

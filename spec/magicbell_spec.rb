@@ -27,4 +27,24 @@ describe MagicBell do
       expect(MagicBell.api_host).to eq("https://api.example.com")
     end
   end
+
+  def base64_decode(base64_decoded_string)
+    Base64.decode64(base64_decoded_string)
+  end
+
+  describe "#hmac" do
+    let(:api_secret) { "dummy_api_secret" }
+    let(:user_email) { "john@example.com" }
+    it "calculates the hmac for the given string" do
+      api_secret = "dummy_api_secret"
+      user_email = "john@example.com"
+
+      ENV["MAGICBELL_API_SECRET"] = "dummy_api_secret"
+
+      hmac = MagicBell.hmac(user_email)
+      # expect(MagicBell.hmac(user_email)).to eq("6rsCIEh9sNFbxMO4NQfBMG88eXWMufPPUubCTggCfnE=")
+      sha256_digest = OpenSSL::Digest.new('sha256')
+      expect(base64_decode(hmac)).to eq(OpenSSL::HMAC.digest(sha256_digest, api_secret, user_email))
+    end
+  end
 end

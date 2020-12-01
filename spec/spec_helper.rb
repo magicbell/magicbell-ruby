@@ -14,6 +14,8 @@
 
 require "webmock/rspec"
 
+require "pry"
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -114,5 +116,8 @@ RSpec.configure do |config|
 
   config.after(:all) do
     MagicBell.reset_config
+    ENV.delete("MAGICBELL_API_KEY")
+    ENV.delete("MAGICBELL_API_SECRET")
+    ENV.delete("MAGICBELL_BCC_EMAIL")
   end
 end
