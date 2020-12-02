@@ -1,11 +1,9 @@
 describe MagicBell do
+  let(:api_key) { "dummy_api_key" }
   let(:api_secret) { "dummy_api_secret" }
+  let(:bcc_email) { "dummy_magic_address@ring.magicbell.io" }
 
   describe ".configure" do
-    let(:api_key) { "dummy_api_key" }
-    let(:api_secret) { "dummy_api_secret" }
-    let(:bcc_email) { "dummy_magic_address@ring.magicbell.io" }
-
     before do
       MagicBell.configure do |config|
         config.api_key = api_key
@@ -32,10 +30,8 @@ describe MagicBell do
   describe "#hmac" do
     let(:api_secret) { "dummy_api_secret" }
     let(:user_email) { "john@example.com" }
-    it "calculates the hmac for the given string" do
-      api_secret = "dummy_api_secret"
-      user_email = "john@example.com"
 
+    it "calculates the hmac for the given string" do
       ENV["MAGICBELL_API_SECRET"] = "dummy_api_secret"
 
       hmac = MagicBell.hmac(user_email)
