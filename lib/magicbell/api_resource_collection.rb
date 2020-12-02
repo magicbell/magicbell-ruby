@@ -2,20 +2,20 @@ module MagicBell
   class ApiResourceCollection
     attr_reader :attributes
 
-    def initialize(attributes = {})
+    def initialize(client, attributes = {})
+      @client = client
       @attributes = attributes
       @loaded = false
     end
 
     # @todo Add examples
     def load(params = {})
-      @response = HTTParty.get(
+      @response = @client.get(
         url,
-        query: params,
-        headers: authentication_headers
+        query: params
       )
       @response_hash = JSON.parse(response.body)
-      @resources = response_hash[name].map { |resource_attributes| resource_class.new(resource_attributes) }
+      @resources = response_hash[name].map { |resource_attributes| resource_class.new(@client, resource_attributes) }
       @loaded = true
 
       self

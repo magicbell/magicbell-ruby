@@ -1,5 +1,5 @@
 module MagicBell
-  module SingletonApiResource
+  class SingletonApiResource < ApiResource
     def create_path
       path
     end

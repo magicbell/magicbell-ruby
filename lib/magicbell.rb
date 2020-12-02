@@ -6,17 +6,20 @@ require "base64"
 require "magicbell/config"
 
 require "httparty"
+require "magicbell/api_operations"
+require "magicbell/client"
 require "magicbell/api_resource"
 require "magicbell/singleton_api_resource"
 require "magicbell/api_resource_collection"
-require "magicbell/user_api_resource"
 require "magicbell/api_resources/notification"
 require "magicbell/api_resources/user"
 require "magicbell/api_resources/user_notification"
 require "magicbell/api_resources/user_notifications"
 require "magicbell/api_resources/user_notification_read"
+require "magicbell/api_resources/user_notification_unread"
+require "magicbell/api_resources/user_notifications_read"
+require "magicbell/api_resources/user_notifications_seen"
 require "magicbell/api_resources/user_notification_preferences"
-require "magicbell/client"
 
 require "magicbell/railtie" if defined?(Rails)
 

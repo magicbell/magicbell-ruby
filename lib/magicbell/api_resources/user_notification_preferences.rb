@@ -1,5 +1,5 @@
 module MagicBell
-  class UserNotificationPreferences < UserApiResource
+  class UserNotificationPreferences < ApiResource
     def name
       "notification_preferences"
     end

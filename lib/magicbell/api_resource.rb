@@ -4,8 +4,8 @@ require "json"
 module MagicBell
   class ApiResource
     class << self
-      def create(attributes = {})
-        new(attributes).create
+      def create(client, attributes = {})
+        new(client, attributes).create
       end
 
       def name
@@ -23,8 +23,10 @@ module MagicBell
 
     attr_reader :id
 
-    def initialize(attributes)
+    def initialize(client, attributes = {})
+      @client = client
       @attributes = attributes
+
       @id = @attributes["id"]
       @loaded = false
     end
@@ -36,10 +38,7 @@ module MagicBell
     alias_method :to_h, :attributes
 
     def load
-      response = HTTParty.get(
-        url,
-        headers: authentication_headers
-      )
+      response = @client.get(url)
       parse_response(response)
 
       self
@@ -66,7 +65,7 @@ module MagicBell
     end
 
     def create
-      response = HTTParty.post(
+      response = @client.post(
         create_url,
         body: { name => attributes }.to_json,
         headers: authentication_headers
@@ -77,7 +76,7 @@ module MagicBell
     end
 
     def update(new_attributes = {})
-      response = HTTParty.put(
+      response = @client.put(
         url,
         body: new_attributes.to_json,
         headers: authentication_headers
@@ -106,7 +105,7 @@ module MagicBell
 
     def parse_response(response)
       @response = response
-      unless response.code == 204
+      unless response.body.empty?
         @response_hash = JSON.parse(@response.body)
         @attributes = @response_hash[name]
       end

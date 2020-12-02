@@ -8,7 +8,7 @@ module MagicBell
     end
 
     def path
-      user_notification.path + "/read"
+      user_notification.path + "/unread"
     end
   end
 end
