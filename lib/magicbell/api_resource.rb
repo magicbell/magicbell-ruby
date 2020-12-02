@@ -37,6 +37,10 @@ module MagicBell
     end
     alias_method :to_h, :attributes
 
+    def attribute(attribute_name)
+      attributes[attribute_name]
+    end
+
     def load
       response = @client.get(url)
       parse_response(response)

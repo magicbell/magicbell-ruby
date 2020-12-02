@@ -1,11 +1,16 @@
-# magicbell
+# magicbell-ruby
 
 [MagicBell](https://magicbell.io) is an embeddable Notification Inbox for web applications.
 
-This ruby gem
+This gem
 
-1. Is a wrapper around [MagicBell's REST API](https://developer.magicbell.io/reference). You can use it to create a notification in your MagicBell project etc.
-2. Can BCC your ActionMailer email notifications to MagicBell if you rather not use MagicBell's API in your Rails application. MagicBell will create an in-app notification from any email notification that's blind copied to it.
+1. Makes it easy to interact with [MagicBell's REST API](https://developer.magicbell.io/reference) from Ruby.
+
+   You can use it to create a notification in your MagicBell project etc.
+3. Can BCC your ActionMailer email notifications to MagicBell if you rather not use MagicBell's API in your Rails application.
+  
+    MagicBell will create an in-app notification from any email notification that's blind copied to it.
+3.  Helps you calculate the HMAC for a user's email when you turn on HMAC Authentication for your MagicBell project
 
 <img width="415" alt="MagicBell Notification Inbox" src="https://user-images.githubusercontent.com/1789832/28327736-f3503f44-6c01-11e7-9a72-c15023db18c6.png">
 
@@ -42,7 +47,9 @@ end
 
 ## API Wrapper
 
-Send a notification to a user or many users
+### Create a notification
+
+Send a notification to one or many users
 
 ```ruby
 magicbell = MagicBell::Client.new
@@ -72,9 +79,35 @@ magicbell.create_notification(
 )
 ```
 
-Visit our API docs for more information on the Create Notification API endpoint.
+### Fetch a user's notifications
 
-Support for other API endpoints will be added shortly.
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user_notifications = user.notifications
+user_notifications.to_a.each { |user_notification| puts user_notification.attribute("title") }
+```
+
+### Mark a user notification as read/unread
+
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user_notification = user.notifications.first
+user_notification.mark_as_read
+user_notification.mark_as_unread
+```
+
+### Mark all notifications of a user as read/seen
+
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user.mark_all_notifications_as_read
+user.mark_all_notifications_as_seen
+```
+
+Please visit our [API documentation](https://developer.magicbell.io/reference) for more information on our API endpoints
 
 ## Rails integration
 
@@ -119,8 +152,6 @@ end
 
 The BCC email address is available in the "Settings" section in your MagicBell dashboard.
 
-## Advanced Usage
-
 ### Customize Action URL
 
 When a user clicks on a notification in MagicBell's Notification Inbox, the Notification Inbox redirects the user to the first URL the body of the email notification. This URL is called the `action_url`.
@@ -154,6 +185,18 @@ class NotificationMailer < ActionMailer::Base
   end
 end
 ```
+
+## HMAC Authentication
+
+### Calculate HMAC
+
+```
+user_email = "joe@example.com"
+hmac = MagicBell.hmac(user_email)
+```
+
+See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
+
 
 ## Developer Hub
 
