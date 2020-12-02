@@ -1,10 +1,27 @@
-require "magicbell/config"
-require "magicbell/hmac"
-require "magicbell/user"
-require "magicbell/railtie" if defined?(Rails)
-require "magicbell/client"
-
 require 'forwardable'
+
+require "openssl"
+require "base64"
+
+require "magicbell/config"
+
+require "httparty"
+require "magicbell/api_operations"
+require "magicbell/client"
+require "magicbell/api_resource"
+require "magicbell/singleton_api_resource"
+require "magicbell/api_resource_collection"
+require "magicbell/api_resources/notification"
+require "magicbell/api_resources/user"
+require "magicbell/api_resources/user_notification"
+require "magicbell/api_resources/user_notifications"
+require "magicbell/api_resources/user_notification_read"
+require "magicbell/api_resources/user_notification_unread"
+require "magicbell/api_resources/user_notifications_read"
+require "magicbell/api_resources/user_notifications_seen"
+require "magicbell/api_resources/user_notification_preferences"
+
+require "magicbell/railtie" if defined?(Rails)
 
 module MagicBell
   WIDGET_JAVASCRIPT_URL = "https://assets.magicbell.io/widget.magicbell.js"
@@ -13,11 +30,10 @@ module MagicBell
   class << self
     extend Forwardable
 
-    def_delegators :@config, :api_key,
-                             :api_secret,
-                             :project_id,
-                             :magic_address,
-                             :api_host
+    def_delegators :config, :api_key,
+                            :api_secret,
+                            :bcc_email,
+                            :api_host
 
     def configure
       yield(config)
@@ -28,19 +44,28 @@ module MagicBell
     end
 
     def reset_config
-      @config = nil
+      @config = Config.new
     end
 
-    def project_specific_headers
+    def authentication_headers
       {
-        'X-MAGICBELL-API-KEY' => config.api_key,
-        'X-MAGICBELL-API-SECRET' => config.api_secret
+        "X-MAGICBELL-API-KEY" => api_key,
+        "X-MAGICBELL-API-SECRET" => api_secret
       }
     end
 
     # Calculate HMAC for user's email
-    def user_key(user_email)
-      MagicBell::HMAC.calculate(user_email, MagicBell.api_secret)
+    def hmac(message)
+      digest = sha256_digest
+      secret = api_secret
+
+      Base64.encode64(OpenSSL::HMAC.digest(digest, secret, message)).strip
+    end
+
+    private
+
+    def sha256_digest
+      OpenSSL::Digest::Digest.new('sha256')
     end
   end
 end

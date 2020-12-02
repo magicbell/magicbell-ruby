@@ -8,7 +8,7 @@ module MagicBell
 
     module ClassMethods
       def ring_the_magicbell
-        default bcc: MagicBell.magic_address
+        default bcc: MagicBell.bcc_email
       end
     end
 

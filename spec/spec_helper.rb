@@ -10,8 +10,12 @@
 # individual file that may not need all of that loaded. Instead, consider making
 # a separate helper file that requires the additional dependencies and performs
 # the additional setup, and require it from the spec files that actually need
-# it.
-#
+# it
+
+require "webmock/rspec"
+
+require "pry"
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -99,16 +103,21 @@ RSpec.configure do |config|
 =end
 
   config.before(:all) do 
-    MagicBell.configure do |config|
-      config.magic_address = "dummy_magic_address@ring.magicbell.io"
-      config.api_key = "dummy_api_key"
-      config.api_secret = "dummy_api_secret"
-      config.project_id = 1
-      config.api_host = "https://api.example.com"
-    end
+    # MagicBell.configure do |config|
+    #   config.magic_address = "dummy_magic_address@ring.magicbell.io"
+    #   config.api_key = "dummy_api_key"
+    #   config.api_secret = "dummy_api_secret"
+    #   config.project_id = 1
+    #   config.api_host = "https://api.example.com"
+    # end
+
+    WebMock.disable! # Disable webmock in case someone forgets to do it in a spec
   end
 
   config.after(:all) do
     MagicBell.reset_config
+    ENV.delete("MAGICBELL_API_KEY")
+    ENV.delete("MAGICBELL_API_SECRET")
+    ENV.delete("MAGICBELL_BCC_EMAIL")
   end
 end

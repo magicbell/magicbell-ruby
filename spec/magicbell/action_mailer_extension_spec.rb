@@ -3,6 +3,7 @@ require "magicbell/action_mailer_extension"
 
 describe MagicBell::ActionMailerExtension do
   describe "Helper methods" do
+    let(:bcc_email) { "dummy_bcc_email@ring.magicbell.io" }
     let(:custom_action_url) { "https://myapp.com/comments/1" }
     let(:metadata) { { comment_id: 1 } }
     let(:custom_title) { "I'd like to have a title that is different from the email's subject" }
@@ -39,19 +40,17 @@ describe MagicBell::ActionMailerExtension do
     }
 
     before(:each) do
-      MagicBell.configure do |config|
-        config.magic_address = "dummy_magic_address@ring.magicbell.io"
-      end
+      ENV["MAGICBELL_BCC_EMAIL"] = bcc_email
     end
 
     after(:each) do
-      MagicBell.reset_config
+      ENV.delete("MAGICBELL_BCC_EMAIL")
     end
 
     describe ".ring_the_magicbell" do
       it "blind carbon copies all emails to the magic address" do
         mail = notification_mailer.new_comment
-        expect(mail["Bcc"].decoded).to eq("dummy_magic_address@ring.magicbell.io")
+        expect(mail["Bcc"].decoded).to eq("dummy_bcc_email@ring.magicbell.io")
       end
     end
 

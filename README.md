@@ -1,94 +1,125 @@
-# magicbell-rails
+# magicbell-ruby
 
-Convert your email notifications to an in-app notification center. This gem makes it easy to add [MagicBell's](https://magicbell.io/) notification center widget to your rails app.
+[MagicBell](https://magicbell.io) is an embeddable Notification Inbox for web applications.
 
-<img width="415" alt="magicbell notification center widget" src="https://user-images.githubusercontent.com/1789832/28327736-f3503f44-6c01-11e7-9a72-c15023db18c6.png">
+This gem
+
+1. Makes it easy to interact with [MagicBell's REST API](https://developer.magicbell.io/reference) from Ruby.
+
+   You can use it to create a notification in your MagicBell project etc.
+3. Can BCC your ActionMailer email notifications to MagicBell if you rather not use MagicBell's API in your Rails application.
+  
+    MagicBell will create an in-app notification from any email notification that's blind copied to it.
+3.  Helps you calculate the HMAC for a user's email when you turn on HMAC Authentication for your MagicBell project
+
+<img width="415" alt="MagicBell Notification Inbox" src="https://user-images.githubusercontent.com/1789832/28327736-f3503f44-6c01-11e7-9a72-c15023db18c6.png">
 
 ## Installation
 
-Add the magicbell gem to your app's Gemfile
+Sign up at magicbell.io and obtain your MagicBell project's API Key and API Secret from the "Settings" section in your MagicBell dashboard.
+
+Add the gem to your app's Gemfile
 
 ```ruby
 gem "magicbell"
 ```
 
-Run
+and install the gem
 
 ```
 bundle install
 ```
 
-Create the initializer file `config/initializers/magicbell.rb` and add your MagicBell credentials there.
+The gem will automatically pick your MagicBell project's API Key and API Secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET` environment variables. Alternatively, provide the API Key and API Secret in an initializer
 
 ```
 vim config/initializers/magicbell.rb
 ```
 
 ```ruby
+# config/initializers/magicbell.rb
+
 MagicBell.configure do |config|
   config.api_key = "your_magicbell_api_key"
   config.api_secret = "your_magicbell_api_secret"
-  config.project_id = 1 # your magicbell project id
-  config.magic_address = "your_magicell_magic_address@ring.magicbell.io"
 end
 ```
 
-If you haven't signed up for MagicBell yet and don't have credentials, visit https://magicbell.io/, sign in with your google account and create a Project.
+## API Wrapper
 
-Add MagicBell's icon to your app's interface. Our customers usually add MagicBell's icon to their app's navigation bar.
+### Create a notification
 
-```html
-<div id="magicbell_notifications" style="display:inline-block;">
-  <i class="icon-magicbell"></i>
-</div>
+Send a notification to one or many users
+
+```ruby
+magicbell = MagicBell::Client.new
+magicbell.create_notification(
+  "title" => "Rob assigned a task to you",
+  "recipients" => [
+    {
+      email: "joe@example.com"
+    },
+  ]
+)
 ```
 
-Create the partial file `config/layouts/_magicbell.html.erb` and copy paste the code below
+You can even provide content for the notification and a URL to redirect the user to when they click on the notification the MagicBell Notification Inbox
 
-```erb
-<!-- MagicBell notification center widget -->
-<script>
-  $('<link/>', {
-    rel: 'stylesheet',
-    type: 'text/css',
-    href: "<%= MagicBell::EXTRAS_CSS_URL %>"
-  }).appendTo('head');
-  $(document).ready(function () {
-    // Initialize the widget after fetching its javascript
-    $.getScript("<%= MagicBell::WIDGET_JAVASCRIPT_URL %>", initializeMagicBell);
-  });
-  function initializeMagicBell() {
-    MagicBell.initialize({
-      target: document.getElementById('magicbell_notifications'),
-      projectId: "<%= MagicBell.project_id %>",
-      apiKey: "<%= MagicBell.api_key %>",
-      userEmail: "<%= current_user.email %>",
-      userKey: "<%= MagicBell.user_key(current_user.email) %>"
-    });
-  }
-</script>
+```ruby
+magicbell = MagicBell::Client.new
+magicbell.create_notification(
+  "title" => "Rob assigned to a task to you",
+  "recipients" => [
+    {
+      email: "joe@example.com"
+    },
+  ],
+  "content": "Hey Joe, can give this customer a demo of our app?",
+  "action_url" => "https://yourwebsite.com/task_path"
+)
 ```
 
-Render the `_magicbell.html.erb` partial in your app's layout. Say, your app's layout file is `config/layouts/app.html.erb`, render the partial at the bottom. Here's an example
+### Fetch a user's notifications
 
-```erb
-<html>
-  <body>
-    <p>This is your app's layout</p>
-  </body>
-
-  <%= render layouts/magicbell %>
-</html>
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user_notifications = user.notifications
+user_notifications.to_a.each { |user_notification| puts user_notification.attribute("title") }
 ```
 
-Now, call the `ring_the_magicbell` method in your notification mailers. Here's an example
+### Mark a user notification as read/unread
+
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user_notification = user.notifications.first
+user_notification.mark_as_read
+user_notification.mark_as_unread
+```
+
+### Mark all notifications of a user as read/seen
+
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user.mark_all_notifications_as_read
+user.mark_all_notifications_as_seen
+```
+
+Please visit our [API documentation](https://developer.magicbell.io/reference) for more information on our API endpoints
+
+## Rails integration
+
+If you've existing ActionMailer email notifications in your Rails app and prefer to not spend time migrating to MagicBell's API, you can blind copy your ActionMailer email notifications to MagicBell. MagicBell will create in-app notifications from email notifications blind copied to it.
+
+Call the `ring_the_magicbell` method in your action mailers like in the example below
 
 ```ruby
 class NotificationMailer < ActionMailer::Base
-  # This method will bcc your email notifications to your magicbell magic address
+  # The ring_the_magicbell method will bcc your email notifications to your MagicBell project's BCC email address
   #
-  # Upon receiving the bcc'ed email notifications, magicbell.io will automatically
-  # create in-app notications for users
+  # Upon receiving a blind copied email notification, magicbell.io will automatically create an in-app notification for the user
   ring_the_magicbell
 
   # This is an email notification in your app
@@ -103,19 +134,29 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-Deploy your app.
+The gem will automatically pick your MagicBell project's BCC email from the `MAGICBELL_BCC_EMAIL` environment variable. Alternatively, provide your MagicBell project's BCC email address in an initializer
 
-That's it! All your users now benefit from having in-app notifications.
+```
+vim config/initializers/magicbell.rb
+```
 
-If you've trouble adding MagicBell to your app or find yourself stuck, please don't hestitate to reach out to us at hana@magicbell.io We usually respond within 24 hours (often much lesser).
+```ruby
+# config/initializers/magicbell.rb
 
-## Advanced Features
+MagicBell.configure do |config|
+  config.api_key = "your_magicbell_api_key"
+  config.api_secret = "your_magicbell_api_secret"
+  config.bcc_email = "your_magicbell_bcc_email@ring.magicbell.io"
+end
+```
 
-#### ActionUrl
+The BCC email address is available in the "Settings" section in your MagicBell dashboard.
 
-When a user clicks on a notification in MagicBell's widget, the widget redirects the user to the first URL the body of the email notification. We call this URL the `ActionUrl`.
+### Customize Action URL
 
-If you wish to redirect users to a different URL instead, set a custom `ActionUrl` in your mailers
+When a user clicks on a notification in MagicBell's Notification Inbox, the Notification Inbox redirects the user to the first URL the body of the email notification. This URL is called the `action_url`.
+
+If you wish to redirect users to a different URL instead, provide an `action_url` in your mailers
 
 ```ruby
 class NotificationMailer < ActionMailer::Base
@@ -129,25 +170,9 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-#### Title
+### Customize Notification Title
 
-We use the subject of the email notification as a notification's title. If this behaviour isn't sutiable for your app, you can set a custom title in your mailers
-
-```ruby
-class NotificationMailer < ActionMailer::Base
-  ring_the_magicbell
-
-  def new_comment(comment)
-    # ...
-    magicbell_notification_title("Richard commented on your post Drive to Lake Tahoe")
-    # ...
-  end
-end
-```
-
-#### Metadata
-
-Its possible to attach custom metadata to every notification. Say you wish to attach a comment's id to a new comment notification, here's how it can be done
+The Notification inbox will use the subject of the email notification as a notification's title. If this behaviour isn't sutiable for your app, provide a title in your mailers
 
 ```ruby
 class NotificationMailer < ActionMailer::Base
@@ -155,58 +180,24 @@ class NotificationMailer < ActionMailer::Base
 
   def new_comment(comment)
     # ...
-    magicbell_notification_metadata(comment_id: comment.id)
+    magicbell_notification_title("Richard posted a new comment")
     # ...
   end
 end
 ```
 
-You can later use this metadata to customize the behaviour of MagicBell's widget.
+## HMAC Authentication
 
-#### Customize widget behaviour
-
-When a user clicks on a notification in MagicBell's widget, the widget redirects the user to the notification's `ActionUrl`. If this behaviour isn't suitable for your app (if your app is a Single Page Application for example), you can customize it.
-
-When initializing the widget, pass a `onNotificationClick` callback to customize the widget's behaviour
-
-```javascript
-function initializeMagicBell() {
-  MagicBell.initialize({
-    target: document.getElementById('magicbell_notifications'),
-    projectId: "<%= MagicBell.project_id %>",
-    apiKey: "<%= MagicBell.api_key %>",
-    userEmail: <%= current_user.email %>,
-    userKey: "<%= MagicBell.user_key(current_user.email) %>",
-    onNotificationClick: function (notification) {
-      // openComment is a function that you've defined in your app's javascript to open
-      // and display a specific comment to the user
-      openComment(notification.meta_data.comment_id)
-    }
-  });
-}
-```
-
-
-## Managing notifications
-
-### Creating a notification
-
-You can create notifications for users. Once `MagicBell` is configured, you can
-call `create_notification` method to create a notification for a given project.
+### Calculate HMAC
 
 ```
-client = MagicBell::Client.new()
-client.create_notification("user@example.com", "Your download is ready",
-                           "Zip file to download is here",
-                           "https://example.com/notifications/1")
+user_email = "joe@example.com"
+hmac = MagicBell.hmac(user_email)
 ```
 
-The response will be a Faraday response object, and methods like `status` and
-`body` will be available for further inspection.
+See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
 
 
-If you'd like us to add more callbacks to the widget, reach out to us at hana@magicbell.io
+## Developer Hub
 
-## Documentation
-
-Visit our [Docs Site](https://docs.magicbell.io) for more information on MagicBell, MagicBell's widget and Advanced Features.
+Please visit our [Developer Hub](https://developer.magicbell.io) for documentation on MagicBell's API and MagicBell's embeddable Notification Inbox
