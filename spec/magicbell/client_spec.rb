@@ -32,7 +32,7 @@ describe MagicBell::Client do
             }]
           }
         }.to_json
-        stub_request(:post, api_url).with(headers: headers, body: body)
+        stub_request(:post, api_url).with(headers: headers, body: body).and_return(status: 201, body: "{}")
         magicbell = MagicBell::Client.new
         magicbell.create_notification(
           title: "Welcome to Muziboo",
@@ -67,7 +67,7 @@ describe MagicBell::Client do
               }]
             }
           }.to_json
-          stub_request(:post, api_url).with(headers: headers, body: body)
+          stub_request(:post, api_url).with(headers: headers, body: body).and_return(status: 201, body: "{}")
           magicbell = MagicBell::Client.new
           magicbell.create_notification(
             title: "Welcome to Muziboo",

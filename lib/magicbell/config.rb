@@ -22,7 +22,7 @@ module MagicBell
     end
 
     def api_host
-      @api_host || ENV["MAGICBELL_API_HOST"]
+      @api_host || ENV["MAGICBELL_API_HOST"] || "https://api.magicbell.io"
     end
   end
 end

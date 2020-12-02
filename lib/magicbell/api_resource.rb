@@ -4,81 +4,113 @@ require "json"
 module MagicBell
   class ApiResource
     class << self
-      def find(id)
-        api_resource = new("id" => "id")
-        api_resource.retrieve
-        api_resource
-      end
-
-      def create(params)
-        body = { name => params }.to_json
-        HTTParty.post(
-          url,
-          headers: authentication_headers,
-          body: body
-        )
+      def create(attributes = {})
+        new(attributes).create
       end
 
       def name
         to_s.demodulize.underscore
       end
 
-      def path
+      def create_path
         "/#{name}s"
       end
 
-      def url
-        api_base_url + path
-      end
-
-      def api_base_url
-        "https://api.magicbell.io"
-      end
-
-      def authentication_headers
-        {
-          "X-MAGICBELL-API-KEY" => MagicBell.api_key,
-          "X-MAGICBELL-API-SECRET" => MagicBell.api_secret
-        }
+      def create_url
+        MagicBell.api_host + create_path
       end
     end
 
-    attr_reader :attributes
+    attr_reader :id
 
     def initialize(attributes)
       @attributes = attributes
+      @id = @attributes["id"]
+      @loaded = false
     end
 
-    def retrieve
+    def attributes
+      load_unless_loaded
+      @attributes
+    end
+    alias_method :to_h, :attributes
+
+    def load
       response = HTTParty.get(
         url,
         headers: authentication_headers
       )
-      binding.pry
-      response_hash = JSON.parse(response_hash)
-      @attributes = response_hash[self.class.name]
+      parse_response(response)
+
+      self
+    end
+
+    def name
+      self.class.name
+    end
+
+    def create_url
+      MagicBell.api_host + create_path
+    end
+
+    def create_path
+      "/#{name}s"
     end
 
     def url
-      self.class.api_base_url + path
-    end
-
-    def id
-      attributes["id"]
+      MagicBell.api_host + path
     end
 
     def path
-      self.class.path + "/{id}"
+      "/#{name}s/#{id}"
+    end
+
+    def create
+      response = HTTParty.post(
+        create_url,
+        body: { name => attributes }.to_json,
+        headers: authentication_headers
+      )
+      parse_response(response)
+
+      self
+    end
+
+    def update(new_attributes = {})
+      response = HTTParty.put(
+        url,
+        body: new_attributes.to_json,
+        headers: authentication_headers
+      )
+      parse_response(response)
+
+      self
+    end
+
+    protected
+
+    def authentication_headers
+      MagicBell.authentication_headers
     end
 
     private
 
-    def api_base_url
-      self.class.api_base_url
+    attr_reader :response,
+                :response_hash
+    
+    def load_unless_loaded
+      return unless id # Never load a new unsaved resource
+      return if @loaded
+      load
     end
 
-    def authentication_headers
-      self.class.authentication_headers
+    def parse_response(response)
+      @response = response
+      unless response.code == 204
+        @response_hash = JSON.parse(@response.body)
+        @attributes = @response_hash[name]
+      end
+      @loaded = true
     end
   end
 end

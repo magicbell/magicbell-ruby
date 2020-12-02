@@ -2,14 +2,23 @@ module MagicBell
   class User < ApiResource
     class << self
       def with_email(email)
-        user = new("email" => email)
-        user.retrieve
-        user
+        new("email" => email)
       end
     end
 
-    def email
-      attributes["email"]
+    attr_reader :email
+
+    def initialize(attributes)
+      @email = attributes["email"]
+      super(attributes)
+    end
+
+    def notifications(params = {})
+      MagicBell::UserNotifications.new("user" => self)
+    end
+
+    def notification_preferences
+      MagicBell::UserNotificationPreferences.new("user" => self)
     end
 
     def path
@@ -18,6 +27,11 @@ module MagicBell
       elsif email
         self.class.path + "/email:#{email}"
       end
+    end
+
+    def authentication_headers
+      authentication_headers = super
+      authentication_headers.merge("X-MAGICBELL-USER-EMAIL" => email)
     end
   end
 end

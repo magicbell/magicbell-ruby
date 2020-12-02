@@ -7,8 +7,15 @@ require "magicbell/config"
 
 require "httparty"
 require "magicbell/api_resource"
-require "magicbell/api_resources/user"
+require "magicbell/singleton_api_resource"
+require "magicbell/api_resource_collection"
+require "magicbell/user_api_resource"
 require "magicbell/api_resources/notification"
+require "magicbell/api_resources/user"
+require "magicbell/api_resources/user_notification"
+require "magicbell/api_resources/user_notifications"
+require "magicbell/api_resources/user_notification_read"
+require "magicbell/api_resources/user_notification_preferences"
 require "magicbell/client"
 
 require "magicbell/railtie" if defined?(Rails)
@@ -35,6 +42,13 @@ module MagicBell
 
     def reset_config
       @config = Config.new
+    end
+
+    def authentication_headers
+      {
+        "X-MAGICBELL-API-KEY" => api_key,
+        "X-MAGICBELL-API-SECRET" => api_secret
+      }
     end
 
     # Calculate HMAC for user's email
