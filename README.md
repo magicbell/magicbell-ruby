@@ -5,7 +5,7 @@
 This ruby gem
 
 1. Is a wrapper around [MagicBell's REST API](https://developer.magicbell.io/reference). You can use it to create a notification in your MagicBell project etc.
-2. Can BCC yourActionMailer email notifications to MagicBell if you rather not use MagicBell's API in our Rails application. MagicBell will create an in-app notification from any email notification that's blind copied to it.
+2. Can BCC your ActionMailer email notifications to MagicBell if you rather not use MagicBell's API in your Rails application. MagicBell will create an in-app notification from any email notification that's blind copied to it.
 
 <img width="415" alt="MagicBell Notification Inbox" src="https://user-images.githubusercontent.com/1789832/28327736-f3503f44-6c01-11e7-9a72-c15023db18c6.png">
 
@@ -40,9 +40,9 @@ MagicBell.configure do |config|
 end
 ```
 
-## Usage
+## API Wrapper
 
-Send a notification to a user
+Send a notification to a user or many users
 
 ```ruby
 magicbell = MagicBell::Client.new
@@ -74,11 +74,11 @@ magicbell.create_notification(
 
 Visit our API docs for more information on the Create Notification API endpoint.
 
-The gem will soon support other API endpoints.
+Support for other API endpoints will be added shortly.
 
-### Convert ActionMailer email notifications to in-app notifications
+## Rails integration
 
-Add MagicBell's embeddable Notification inbox to our application (if you haven't already). The instructions for doing this are available in the "Embed" section in your MagicBell dashboard.
+If you've existing ActionMailer email notifications in your Rails app and prefer to not spend time migrating to MagicBell's API, you can blind copy your ActionMailer email notifications to MagicBell. MagicBell will create in-app notifications from email notifications blind copied to it.
 
 Call the `ring_the_magicbell` method in your action mailers like in the example below
 
@@ -101,7 +101,7 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-The gem will automatically pick your MagicBell project's BCC email address from the `MAGICBELL_BCC_EMAIL` environment variable. Alternatively, provide your MagicBell project's BCC email address in an initializer
+The gem will automatically pick your MagicBell project's BCC email from the `MAGICBELL_BCC_EMAIL` environment variable. Alternatively, provide your MagicBell project's BCC email address in an initializer
 
 ```
 vim config/initializers/magicbell.rb
@@ -123,7 +123,7 @@ The BCC email address is available in the "Settings" section in your MagicBell d
 
 ### Customize Action URL
 
-When a user clicks on a notification in MagicBell's Notification Inbox, the Notification Inbox redirects the user to the first URL the body of the email notification. We call this URL the `action_url`.
+When a user clicks on a notification in MagicBell's Notification Inbox, the Notification Inbox redirects the user to the first URL the body of the email notification. This URL is called the `action_url`.
 
 If you wish to redirect users to a different URL instead, provide an `action_url` in your mailers
 
@@ -155,6 +155,6 @@ class NotificationMailer < ActionMailer::Base
 end
 ```
 
-## Documentation
+## Developer Hub
 
-Please visit our [Docs Site](https://docs.magicbell.io) for more information on MagicBell, MagicBell's API and MagicBell's embeddable Notification Inbox
+Please visit our [Developer Hub](https://developer.magicbell.io) for documentation on MagicBell's API and MagicBell's embeddable Notification Inbox
