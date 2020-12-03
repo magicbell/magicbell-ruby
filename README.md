@@ -236,4 +236,8 @@ See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more inf
 
 ## Developer Hub
 
-Please visit our [Developer Hub](https://developer.magicbell.io) for documentation on MagicBell's API and MagicBell's embeddable Notification Inbox
+Please visit our website https://magicbell.io and our Developer Hub https://developer.magicbell.io for more information MagicBell's embeddable notification inbox and MagicBell's REST API
+
+## Contact Us
+
+Have a query or hit upon a problem? Create a post in our Developer Community https://community.magicbell.io or contact us at hello@magicbell.io
