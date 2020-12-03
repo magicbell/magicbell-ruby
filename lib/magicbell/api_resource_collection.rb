@@ -1,33 +1,29 @@
 module MagicBell
   class ApiResourceCollection
-    attr_reader :attributes
-
-    def initialize(client, attributes = {})
+    def initialize(client, query_params = {})
       @client = client
-      @attributes = attributes
-      @loaded = false
+      @query_params = query_params
+      @retrieved = false
     end
 
     # @todo Add examples
-    def load(params = {})
+    def retrieve
       @response = @client.get(
         url,
-        query: params
+        query: @query_params
       )
       @response_hash = JSON.parse(response.body)
       @resources = response_hash[name].map { |resource_attributes| resource_class.new(@client, resource_attributes) }
-      @loaded = true
+      @retrieved = true
 
       self
     end
 
     def to_a
-      load_unless_loaded
       resources
     end
 
     def first
-      load_unless_loaded
       resources.first
     end
 
@@ -39,30 +35,55 @@ module MagicBell
       MagicBell.authentication_headers
     end
 
+    def each(&block)
+      resources.each(&block)
+    end
+
+    def each_page
+      current_page = self
+      loop do
+        yield(current_page)
+        break if current_page.last_page?
+        current_page = current_page.next_page
+      end
+    end
+
+    def last_page?
+      current_page == total_pages
+    end
+
+    def next_page
+      self.class.new(@client, page: current_page + 1, per_page: per_page)
+    end
+
     def current_page
-      return unless response_hash
+      retrieve_unless_retrieved
       response_hash["current_page"]
     end
 
     def total_pages
-      return unless response_hash
+      retrieve_unless_retrieved
       response_hash["total_pages"]
     end
 
     def per_page
-      return unless response_hash
+      retrieve_unless_retrieved
       response_hash["per_page"]
     end
 
     private
 
     attr_reader :response,
-                :response_hash,
-                :resources
+                :response_hash
     
-    def load_unless_loaded
-      return if @loaded
-      load
+    def resources
+      retrieve_unless_retrieved
+      return @resources
+    end
+    
+    def retrieve_unless_retrieved
+      return if @retrieved
+      retrieve
     end
   end
 end

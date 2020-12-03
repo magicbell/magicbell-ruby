@@ -28,11 +28,11 @@ module MagicBell
       @attributes = attributes
 
       @id = @attributes["id"]
-      @loaded = false
+      @retrieved = true if @id
     end
 
     def attributes
-      load_unless_loaded
+      retrieve_unless_retrieved
       @attributes
     end
     alias_method :to_h, :attributes
@@ -41,7 +41,7 @@ module MagicBell
       attributes[attribute_name]
     end
 
-    def load
+    def retrieve
       response = @client.get(url)
       parse_response(response)
 
@@ -101,10 +101,10 @@ module MagicBell
     attr_reader :response,
                 :response_hash
     
-    def load_unless_loaded
-      return unless id # Never load a new unsaved resource
-      return if @loaded
-      load
+    def retrieve_unless_retrieved
+      return unless id # Never retrieve a new unsaved resource
+      return if @retrieved
+      retrieve
     end
 
     def parse_response(response)
@@ -113,7 +113,7 @@ module MagicBell
         @response_hash = JSON.parse(@response.body)
         @attributes = @response_hash[name]
       end
-      @loaded = true
+      @retrieved = true
     end
   end
 end
