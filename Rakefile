@@ -26,6 +26,8 @@ end
 
 task default: :test
 
+# @example
+#   GEM_HOST_API_KEY="our_rubygems_api_key" bundle exec rake publish_to_rubygems
 task :publish_to_rubygems do
   `gem build magicbell.gemspec`
   require_relative "lib/magicbell"
