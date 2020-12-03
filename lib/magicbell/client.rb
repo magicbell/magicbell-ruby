@@ -1,5 +1,11 @@
 module MagicBell
   class Client
+    class HTTPError < StandardError
+      attr_accessor :response_status,
+                    :response_headers,
+                    :response_body
+    end
+
     include ApiOperations
 
     def create_notification(notification_attributes)
