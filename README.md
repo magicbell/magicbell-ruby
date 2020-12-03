@@ -234,9 +234,9 @@ hmac = MagicBell.hmac(user_email)
 See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
 
 
-## Developer Hub
+## API docs
 
-Please visit our website https://magicbell.io and our Developer Hub https://developer.magicbell.io for more information MagicBell's embeddable notification inbox and MagicBell's REST API
+Please visit our website https://magicbell.io and our API docs https://developer.magicbell.io for more information MagicBell's embeddable notification inbox and MagicBell's REST API
 
 ## Contact Us
 
