@@ -47,6 +47,8 @@ end
 
 ## API Wrapper
 
+This gem makes it easy to interact with MagicBell's REST API https://developer.magicbell.io/reference from Ruby
+
 ### Create a notification
 
 Send a notification to one or many users
@@ -81,11 +83,26 @@ magicbell.create_notification(
 
 ### Fetch a user's notifications
 
+Fetch a user's notifications
+
 ```ruby
 magicbell = MagicBell::Client.new
 user = magicbell.user_with_email("joe@example.com")
 user_notifications = user.notifications
-user_notifications.to_a.each { |user_notification| puts user_notification.attribute("title") }
+user_notifications.each { |user_notification| puts user_notification.attribute("title") }
+```
+
+Please note that the example above fetches the user's 15 most recent notification (the default number of notifications per page) If you'd like to fetch subsequent pages, use
+
+```ruby
+magicbell = MagicBell::Client.new
+user = magicbell.user_with_email("joe@example.com")
+user_notifications = user.notifications
+user_notifications.each_page do |page|
+  page.each do |user_notification|
+    puts user_notification.attribute("title")
+  end
+end
 ```
 
 ### Mark a user notification as read/unread
@@ -107,7 +124,9 @@ user.mark_all_notifications_as_read
 user.mark_all_notifications_as_seen
 ```
 
-Please visit our [API documentation](https://developer.magicbell.io/reference) for more information on our API endpoints
+### Error handling
+
+Please note that the gem will raise a `MagicBell::Client::HTTPError` if an API returns a non 2xx response
 
 ## Rails integration
 

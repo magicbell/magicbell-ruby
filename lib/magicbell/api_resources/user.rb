@@ -10,9 +10,9 @@ module MagicBell
       super(client, attributes)
     end
 
-    def notifications(params = {})
+    def notifications(query_params = {})
       client = self
-      MagicBell::UserNotifications.new(client, params)
+      MagicBell::UserNotifications.new(client, query_params)
     end
 
     def mark_all_notifications_as_read

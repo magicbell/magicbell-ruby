@@ -11,3 +11,5 @@ test/dummy/tmp/
 # Bundler
 vendor/bundle
 Gemfile.lock
+
+*.gem
