@@ -47,6 +47,8 @@ end
 
 ## API Wrapper
 
+This gem makes it easy to interact with MagicBell's REST API https://developer.magicbell.io/reference from Ruby
+
 ### Create a notification
 
 Send a notification to one or many users
@@ -122,7 +124,9 @@ user.mark_all_notifications_as_read
 user.mark_all_notifications_as_seen
 ```
 
-Please visit our [API documentation](https://developer.magicbell.io/reference) for more information on our API endpoints
+### Error handling
+
+Please note that the gem will raise a `MagicBell::Client::HTTPError` if an API returns a non 2xx response
 
 ## Rails integration
 
