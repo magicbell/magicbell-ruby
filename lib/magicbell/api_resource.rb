@@ -1,4 +1,5 @@
 require "active_support/inflector"
+require "active_support/core_ext/object/blank"
 require "json"
 
 module MagicBell
@@ -6,6 +7,12 @@ module MagicBell
     class << self
       def create(client, attributes = {})
         new(client, attributes).create
+      end
+
+      def find(client, id)
+        api_resource = new(client, "id" => id)
+        api_resource.retrieve
+        api_resource
       end
 
       def name
@@ -109,7 +116,7 @@ module MagicBell
 
     def parse_response(response)
       @response = response
-      unless response.body.empty?
+      unless response.body.blank?
         @response_hash = JSON.parse(@response.body)
         @attributes = @response_hash[name]
       end

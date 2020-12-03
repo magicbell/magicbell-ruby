@@ -1,5 +1,5 @@
 module MagicBell
-  class UserNotificationRead < SingletonApiResource
+  class UserNotificationUnread < SingletonApiResource
     attr_reader :user_notification
 
     def initialize(client, attributes)

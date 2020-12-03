@@ -15,6 +15,11 @@ module MagicBell
       MagicBell::UserNotifications.new(client, query_params)
     end
 
+    def find_notification(notification_id)
+      client = self
+      MagicBell::UserNotification.find(client, notification_id)
+    end
+
     def mark_all_notifications_as_read
       client = self
       MagicBell::UserNotificationsRead.new(client).create
