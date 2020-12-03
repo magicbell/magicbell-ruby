@@ -27,9 +27,9 @@ end
 task default: :test
 
 task :publish_to_rubygems do
-  system("gem build magicbell.gemspec")
-  require "lib/magicbell"
-  system("gem push magicbell-#{MagicBell::VERSION}.gem")
+  `gem build magicbell.gemspec`
+  require_relative "lib/magicbell"
+  `gem push magicbell-#{MagicBell::VERSION}.gem`
 end
 
 task :console do
