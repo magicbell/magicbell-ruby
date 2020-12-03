@@ -126,7 +126,24 @@ user.mark_all_notifications_as_seen
 
 ### Error handling
 
-Please note that the gem will raise a `MagicBell::Client::HTTPError` if an API returns a non 2xx response
+Please note that the gem raises a `MagicBell::Client::HTTPError` if an API returns a non 2xx response
+
+```ruby
+begin
+  magicbell = MagicBell::Client.new
+  magicbell.create_notification(
+    "title" => "Rob assigned to a task to you"
+  )
+rescue MagicBell::Client::HTTPError => e
+  # Report the error to your error tracker
+  error_context = {
+    response_status: e.response_status,
+    response_headers: e.response_headers,
+    response_body: e.response_body
+  }
+  ErrorReporter.report(e, context: error_context)
+end
+```
 
 ## Rails integration
 
