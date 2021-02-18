@@ -1,6 +1,8 @@
 # magicbell-ruby
 
-[MagicBell](https://magicbell.io) is an embeddable Notification Inbox for web applications.
+[MagicBell](https://magicbell.io) is an embeddable Notification Inbox for web & mobile applications.
+
+Please familiarlize yourself with the [core concepts of MagicBell](https://developer.magicbell.io/docs/core-concepts) before using this gem.
 
 This gem
 
@@ -12,7 +14,7 @@ This gem
 
    MagicBell will create an in-app notification from any email notification that's blind copied to it.
 
-3. Helps you calculate the HMAC for a user's email when you turn on HMAC Authentication for your MagicBell project
+3. Helps you calculate the HMAC for a user's email or external_id when you turn on [HMAC Authentication](https://developer.magicbell.io/docs/turn-on-hmac-authentication) for your MagicBell project
 
 <img width="415" alt="MagicBell Notification Inbox" src="https://files.readme.io/c09b21a-image1.png">
 
