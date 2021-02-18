@@ -7,12 +7,14 @@ This gem
 1. Makes it easy to interact with [MagicBell's REST API](https://developer.magicbell.io/reference) from Ruby.
 
    You can use it to create a notification in your MagicBell project etc.
-3. Can BCC your ActionMailer email notifications to MagicBell if you rather not use MagicBell's API in your Rails application.
-  
-    MagicBell will create an in-app notification from any email notification that's blind copied to it.
-3.  Helps you calculate the HMAC for a user's email when you turn on HMAC Authentication for your MagicBell project
 
-<img width="415" alt="MagicBell Notification Inbox" src="https://user-images.githubusercontent.com/1789832/28327736-f3503f44-6c01-11e7-9a72-c15023db18c6.png">
+2. Can BCC your ActionMailer email notifications to MagicBell if you rather not use MagicBell's API in your Rails application.
+
+   MagicBell will create an in-app notification from any email notification that's blind copied to it.
+
+3. Helps you calculate the HMAC for a user's email when you turn on HMAC Authentication for your MagicBell project
+
+<img width="415" alt="MagicBell Notification Inbox" src="https://files.readme.io/c09b21a-image1.png">
 
 ## Installation
 
@@ -51,7 +53,7 @@ This gem makes it easy to interact with MagicBell's REST API https://developer.m
 
 ### Create a notification
 
-Send a notification to one or many users
+Send a notification to one or many users by identifying them with their email address
 
 ```ruby
 magicbell = MagicBell::Client.new
@@ -63,6 +65,17 @@ magicbell.create_notification(
     },
   ]
 )
+```
+
+You can also identify users with their `external_id`, which is their ID in your database. That way, if their email address changes, they'd still have access to their notifications. You'll need to make sure you identify them with their `externalID` [in your frontend](https://developer.magicbell.io/docs/browser-js#identifying-users).
+
+```ruby
+     magicbell.create_notification(
+          title: "Welcome to Muziboo",
+          recipients: [{
+            external_id: "id_in_your_database"
+          }]
+        )
 ```
 
 You can even provide content for the notification and a URL to redirect the user to when they click on the notification the MagicBell Notification Inbox
@@ -162,7 +175,7 @@ class NotificationMailer < ActionMailer::Base
   def new_comment
     # ...
   end
-  
+
   # This is another email notification in your app
   def mentioned
     # ...
@@ -233,7 +246,6 @@ hmac = MagicBell.hmac(user_email)
 
 See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
 
-
 ## API docs
 
 Please visit our website https://magicbell.io and our API docs https://developer.magicbell.io for more information MagicBell's embeddable notification inbox and MagicBell's REST API
@@ -241,3 +253,7 @@ Please visit our website https://magicbell.io and our API docs https://developer
 ## Contact Us
 
 Have a query or hit upon a problem? Create a post in our Developer Community https://community.magicbell.io or contact us at hello@magicbell.io
+
+```
+
+```

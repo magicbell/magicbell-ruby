@@ -23,23 +23,46 @@ describe MagicBell::Client do
   describe "#create_notification" do
     let(:notifications_url) { api_host + "/notifications" }
 
-    it "creates a notification" do
-      body = {
-        "notification" => {
-          "title" => "Welcome to Muziboo",
-          "recipients" => [{
-            "email" => "john@example.com"
+    context "when recipient is identified by email" do
+      it "creates a notification" do
+        body = {
+          "notification" => {
+            "title" => "Welcome to Muziboo",
+            "recipients" => [{
+              "email" => "john@example.com"
+            }]
+          }
+        }.to_json
+        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 201, body: "{}")
+        magicbell = MagicBell::Client.new
+        magicbell.create_notification(
+          title: "Welcome to Muziboo",
+          recipients: [{
+            email: "john@example.com"
           }]
-        }
-      }.to_json
-      stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 201, body: "{}")
-      magicbell = MagicBell::Client.new
-      magicbell.create_notification(
-        title: "Welcome to Muziboo",
-        recipients: [{
-          email: "john@example.com"
-        }]
-      )
+        )
+      end
+    end
+    
+    context "when recipient is identified by external_id" do
+      it "creates a notification" do
+        body = {
+          "notification" => {
+            "title" => "Welcome to Muziboo",
+            "recipients" => [{
+              "external_id" => "id_in_your_database"
+            }]
+          }
+        }.to_json
+        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 201, body: "{}")
+        magicbell = MagicBell::Client.new
+        magicbell.create_notification(
+          title: "Welcome to Muziboo",
+          recipients: [{
+            external_id: "id_in_your_database"
+          }]
+        )
+      end
     end
 
     context "API response was not a 2xx response" do
