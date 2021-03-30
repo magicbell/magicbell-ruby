@@ -2,7 +2,7 @@ module MagicBell
   module ApiOperations
     def get(url, options = {})
       defaults = { headers: default_headers }
-      response = HTTParty.get(url, defaults.merge(options))
+      response = HTTParty.get(url, options.merge(defaults))
       raise_http_error_unless_2xx_response(response)
 
       response
@@ -10,7 +10,7 @@ module MagicBell
 
     def post(url, options = {})
       defaults = { headers: default_headers }
-      response = HTTParty.post(url, defaults.merge(options))
+      response = HTTParty.post(url, options.merge(defaults))
       raise_http_error_unless_2xx_response(response)
 
       response
@@ -18,7 +18,7 @@ module MagicBell
 
     def put(url, options = {})
       defaults = { headers: default_headers }
-      response = HTTParty.put(url, defaults.merge(options))
+      response = HTTParty.put(url, options.merge(defaults))
       raise_http_error_unless_2xx_response(response)
 
       response
