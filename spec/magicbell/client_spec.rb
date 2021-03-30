@@ -8,7 +8,8 @@ describe MagicBell::Client do
   let(:headers) {
     {
       "X-MAGICBELL-API-KEY" => api_key,
-      "X-MAGICBELL-API-SECRET" => api_secret
+      "X-MAGICBELL-API-SECRET" => api_secret,
+      "Content-Type" => "application/json",
     }
   }
   let(:user_authentication_headers) { headers.merge("X-MAGICBELL-USER-EMAIL" => user_email) }
@@ -181,14 +182,17 @@ describe MagicBell::Client do
     it "is also configurable in an initializer" do
       ENV.delete("MAGICBELL_API_KEY")
       ENV.delete("MAGICBELL_API_SECRET")
+      WebMock.enable!
+
       MagicBell.configure do |config|
         config.api_key = api_key
         config.api_secret = api_secret
       end
-      WebMock.enable!
+
       headers = {
         "X-MAGICBELL-API-KEY" => api_key,
         "X-MAGICBELL-API-SECRET" => api_secret,
+        "Content-Type" => "application/json",
       }
       body = {
         "notification" => {
@@ -199,6 +203,7 @@ describe MagicBell::Client do
         }
       }.to_json
       stub_request(:post, "#{api_host}/notifications").with(headers: headers, body: body).and_return(status: 201, body: "{}")
+
       magicbell = MagicBell::Client.new
       magicbell.create_notification(
         title: "Welcome to Muziboo",

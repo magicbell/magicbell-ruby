@@ -3,7 +3,7 @@ module MagicBell
     def get(url, options = {})
       response = HTTParty.get(
         url,
-        options.merge(headers: authentication_headers)
+        options.merge(headers: default_headers)
       )
       raise_http_error_unless_2xx_response(response)
 
@@ -13,7 +13,7 @@ module MagicBell
     def post(url, options = {})
       response = HTTParty.post(
         url,
-        options.merge(headers: authentication_headers)
+        options.merge(headers: default_headers)
       )
       raise_http_error_unless_2xx_response(response)
 
@@ -23,7 +23,7 @@ module MagicBell
     def put(url, options = {})
       response = HTTParty.put(
         url,
-        options.merge(headers: authentication_headers)
+        options.merge(headers: default_headers)
       )
       raise_http_error_unless_2xx_response(response)
 
