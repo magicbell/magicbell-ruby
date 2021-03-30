@@ -79,7 +79,7 @@ module MagicBell
       response = @client.post(
         create_url,
         body: { name => attributes }.to_json,
-        headers: authentication_headers
+        headers: extra_headers
       )
       parse_response(response)
 
@@ -90,7 +90,7 @@ module MagicBell
       response = @client.put(
         url,
         body: new_attributes.to_json,
-        headers: authentication_headers
+        headers: extra_headers
       )
       parse_response(response)
 
@@ -99,8 +99,8 @@ module MagicBell
 
     protected
 
-    def authentication_headers
-      MagicBell.authentication_headers
+    def extra_headers
+      {}
     end
 
     private

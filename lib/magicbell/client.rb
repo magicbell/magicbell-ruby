@@ -21,10 +21,6 @@ module MagicBell
       MagicBell::User.new(client, "email" => email)
     end
 
-    def default_headers
-      authentication_headers.merge("Content-Type" => "application/json")
-    end
-
     def authentication_headers
       MagicBell.authentication_headers
     end
