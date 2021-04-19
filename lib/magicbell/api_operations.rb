@@ -41,11 +41,13 @@ module MagicBell
       e.response_status = response.code
       e.response_headers = response.headers.to_h
       e.response_body = response.body
-      body = JSON.parse(response.body)
-      e.errors = body["errors"]
-      e.errors.each do |error, index|
-        puts "#{error["suggestion"].red}"
-        puts "#{error["help_link"].blue.on_white}"
+      unless e.response_body.nil? || e.response_body.empty?
+        body = JSON.parse(response.body)
+        e.errors = body["errors"]
+        e.errors.each do |error, index|
+          puts "#{error["suggestion"].red}"
+          puts "#{error["help_link"].blue.on_white}"
+        end
       end
       raise e
     end
