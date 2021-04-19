@@ -41,6 +41,7 @@ module MagicBell
       e.response_status = response.code
       e.response_headers = response.headers.to_h
       e.response_body = response.body
+      e.errors = []
       unless e.response_body.nil? || e.response_body.empty?
         body = JSON.parse(response.body)
         e.errors = body["errors"]
