@@ -1,6 +1,5 @@
 require 'json'
 require 'colorize'
-require 'pp'
 module MagicBell
   module ApiOperations
     def get(url, options = {})
