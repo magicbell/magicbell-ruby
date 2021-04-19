@@ -91,6 +91,40 @@ describe MagicBell::Client do
           expect(e.response_body).to eq("")
         end
       end
+      it "raises and displays an error" do
+        body = {
+          "notification" => {
+            "title" => "Welcome to Muziboo"
+          }
+        }.to_json
+
+        response_body = {
+          "errors"=>
+          [
+            {
+              "code" => "api_secret_not_provided",
+              "suggestion" => "Please provide the 'X-MAGICBELL-API-SECRET' header containing your MagicBell project's API secret. Alternatively, if you intend to use MagicBell's API in JavaScript in your web application's frontend, please provide the 'X-MAGICBELL-USER-EMAIL' header containing a user's email and the 'X-MAGICBELL-USER-HMAC' containing the user's HMAC.",
+              "message" => "API Secret not provided",
+              "help_link" => "https://developer.magicbell.io/reference#authentication"
+            }
+          ]
+        }.to_json
+        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+
+        magicbell = MagicBell::Client.new
+        expect do
+          magicbell.create_notification(title: "Welcome to Muziboo")
+        end.to raise_error(MagicBell::Client::HTTPError)
+
+        begin
+          magicbell.create_notification(title: "Welcome to Muziboo")
+        rescue MagicBell::Client::HTTPError => e
+          expect(e.response_status).to eq(422)
+          expect(e.response_headers).to eq({})
+          expect(e.response_body).to eq(response_body)
+          expect(e.errors.length).to eq(1)
+        end
+      end
     end
   end
 
