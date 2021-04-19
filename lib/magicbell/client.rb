@@ -3,7 +3,8 @@ module MagicBell
     class HTTPError < StandardError
       attr_accessor :response_status,
                     :response_headers,
-                    :response_body
+                    :response_body,
+                    :errors
     end
 
     include ApiOperations
