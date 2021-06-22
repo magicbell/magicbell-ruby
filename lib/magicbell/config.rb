@@ -2,7 +2,6 @@ module MagicBell
   class Config
     attr_writer :api_key
     attr_writer :api_secret
-    attr_writer :bcc_email
     attr_writer :api_host
 
     def initialize
@@ -15,10 +14,6 @@ module MagicBell
 
     def api_secret
       @api_secret || ENV["MAGICBELL_API_SECRET"]
-    end
-
-    def bcc_email
-      @bcc_email || ENV["MAGICBELL_BCC_EMAIL"]
     end
 
     def api_host

@@ -1,14 +1,12 @@
 describe MagicBell do
   let(:api_key) { "dummy_api_key" }
   let(:api_secret) { "dummy_api_secret" }
-  let(:bcc_email) { "dummy_magic_address@ring.magicbell.io" }
 
   describe ".configure" do
     before do
       MagicBell.configure do |config|
         config.api_key = api_key
         config.api_secret = api_secret
-        config.bcc_email = bcc_email
       end
     end
 

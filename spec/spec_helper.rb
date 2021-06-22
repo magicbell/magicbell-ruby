@@ -102,7 +102,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
-  config.before(:all) do 
+  config.before(:all) do
     # MagicBell.configure do |config|
     #   config.magic_address = "dummy_magic_address@ring.magicbell.io"
     #   config.api_key = "dummy_api_key"
@@ -118,6 +118,5 @@ RSpec.configure do |config|
     MagicBell.reset_config
     ENV.delete("MAGICBELL_API_KEY")
     ENV.delete("MAGICBELL_API_SECRET")
-    ENV.delete("MAGICBELL_BCC_EMAIL")
   end
 end
