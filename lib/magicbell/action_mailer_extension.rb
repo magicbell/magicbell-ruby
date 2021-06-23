@@ -2,16 +2,6 @@ require "json"
 
 module MagicBell
   module ActionMailerExtension
-    def self.included(mailer_class)
-      mailer_class.send :extend, ClassMethods
-    end
-
-    module ClassMethods
-      def ring_the_magicbell
-        default bcc: MagicBell.bcc_email
-      end
-    end
-
     def magicbell_notification_action_url(action_url)
       headers["X-MagicBell-Notification-ActionUrl"] = action_url
     end

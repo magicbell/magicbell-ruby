@@ -32,7 +32,6 @@ module MagicBell
 
     def_delegators :config, :api_key,
                             :api_secret,
-                            :bcc_email,
                             :api_host
 
     def configure

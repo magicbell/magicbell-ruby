@@ -19,10 +19,15 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty'
   s.add_dependency 'activesupport'
   s.add_dependency 'colorize'
-  
+
   s.add_development_dependency "actionmailer"
   s.add_development_dependency "rspec", '~> 3.9'
   s.add_development_dependency "webmock"
   s.add_development_dependency "pry"
   s.add_development_dependency "rake"
+
+  s.post_install_message = %q{
+    *** Breaking Change:: The 2.0.0 release removes the BCC functionality. ***
+    Please update your MagicBell integration to use the API for creating notifications or downgrade to 1.0.4
+  }
 end
