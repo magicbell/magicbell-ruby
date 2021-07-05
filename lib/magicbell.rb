@@ -46,10 +46,10 @@ module MagicBell
       @config = Config.new
     end
 
-    def authentication_headers
+    def authentication_headers(client_api_key: nil, client_api_secret: nil)
       {
-        "X-MAGICBELL-API-KEY" => api_key,
-        "X-MAGICBELL-API-SECRET" => api_secret
+        "X-MAGICBELL-API-KEY" => client_api_key || api_key,
+        "X-MAGICBELL-API-SECRET" => client_api_secret || api_secret
       }
     end
 

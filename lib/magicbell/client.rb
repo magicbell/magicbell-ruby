@@ -9,6 +9,11 @@ module MagicBell
 
     include ApiOperations
 
+    def initialize(api_key: nil, api_secret: nil)
+      @api_key = api_key
+      @api_secret = api_secret
+    end
+
     def create_notification(notification_attributes)
       MagicBell::Notification.create(self, notification_attributes)
     end
@@ -23,7 +28,7 @@ module MagicBell
     end
 
     def authentication_headers
-      MagicBell.authentication_headers
+      MagicBell.authentication_headers(client_api_key: @api_key, client_api_secret: @api_secret)
     end
   end
 end
