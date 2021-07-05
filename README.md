@@ -30,6 +30,9 @@ and install the gem
 bundle install
 ```
 
+## Configuration
+
+### Global configuration
 The gem will automatically pick your MagicBell project's API Key and API Secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET` environment variables. Alternatively, provide the API Key and API Secret in an initializer
 
 ```
@@ -45,6 +48,17 @@ MagicBell.configure do |config|
 end
 ```
 
+### Per project configuration
+If you integrate more than one MagicBell project into your application, you may want to use different sets of API key and API client, per project.
+To achieve this, you can create a `MagicBell::Client` object, with a configuration that will override the global configuration.
+
+```ruby
+  magicbell_client = MagicBell::Client.new(
+    api_key: "your_project_magicbell_api_key",
+    api_secret: "your_project_magicbell_api_secret"
+  )
+```
+If a set of API key and API secret are not provided to the client, the global configuration will be used.
 ## API Wrapper
 
 This gem makes it easy to interact with MagicBell's REST API https://developer.magicbell.io/reference from Ruby
@@ -195,9 +209,17 @@ end
 
 ### Calculate HMAC
 
+#### Using API secret from global configuration
 ```
 user_email = "joe@example.com"
 hmac = MagicBell.hmac(user_email)
+```
+
+#### Using a specific API secret
+```ruby
+user_email = "joe@example.com"
+
+hmac = MagicBell.hmac(user_email, client_api_secret: 'your_api_secret')
 ```
 
 See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
