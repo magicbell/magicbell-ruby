@@ -30,5 +30,17 @@ module MagicBell
     def authentication_headers
       MagicBell.authentication_headers(client_api_key: @api_key, client_api_secret: @api_secret)
     end
+
+    def hmac(message)
+      secret = @api_secret || MagicBell.api_secret
+
+      Base64.encode64(OpenSSL::HMAC::digest(sha256_digest, secret, message)).strip
+    end
+
+    private
+
+    def sha256_digest
+      OpenSSL::Digest::Digest.new('sha256')
+    end
   end
 end

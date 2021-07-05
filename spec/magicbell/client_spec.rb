@@ -15,6 +15,10 @@ describe MagicBell::Client do
   }
   let(:user_authentication_headers) { headers.merge("X-MAGICBELL-USER-EMAIL" => user_email) }
 
+  def base64_decode(base64_decoded_string)
+    Base64.decode64(base64_decoded_string)
+  end
+
   before(:each) do
     ENV["MAGICBELL_API_KEY"] = api_key
     ENV["MAGICBELL_API_SECRET"] = api_secret
@@ -275,6 +279,31 @@ describe MagicBell::Client do
         magicbell = MagicBell::Client.new(api_key: client_api_key, api_secret: client_api_secret)
 
         expect(magicbell.authentication_headers).to eq("X-MAGICBELL-API-KEY" => client_api_key, "X-MAGICBELL-API-SECRET" => client_api_secret)
+      end
+    end
+  end
+
+  describe "#hmac" do
+    let(:client_api_key) { 'client_api_key' }
+    let(:client_api_secret) { 'client_api_secret' }
+
+    context "Using the global API secret" do
+      it "calculates the hmac for the given string" do
+        magicbell = MagicBell::Client.new
+        hmac = magicbell.hmac(user_email)
+        sha256_digest = OpenSSL::Digest.new('sha256')
+
+        expect(base64_decode(hmac)).to eq(OpenSSL::HMAC.digest(sha256_digest, api_secret, user_email))
+      end
+    end
+
+    context "Using the client API secret" do
+      it "calculates the hmac for the given string" do
+        magicbell = MagicBell::Client.new(api_key: client_api_key, api_secret: client_api_secret)
+        hmac = magicbell.hmac(user_email)
+        sha256_digest = OpenSSL::Digest.new('sha256')
+
+        expect(base64_decode(hmac)).to eq(OpenSSL::HMAC.digest(sha256_digest, client_api_secret, user_email))
       end
     end
   end
