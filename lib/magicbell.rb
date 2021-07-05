@@ -54,9 +54,9 @@ module MagicBell
     end
 
     # Calculate HMAC for user's email
-    def hmac(message, client_api_secret: nil)
+    def hmac(message)
       digest = sha256_digest
-      secret = client_api_secret || api_secret
+      secret = api_secret
 
       Base64.encode64(OpenSSL::HMAC.digest(digest, secret, message)).strip
     end
