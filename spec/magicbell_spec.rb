@@ -2,18 +2,18 @@ describe MagicBell do
   let(:api_key) { "dummy_api_key" }
   let(:api_secret) { "dummy_api_secret" }
 
+  before do
+    MagicBell.configure do |config|
+      config.api_key = api_key
+      config.api_secret = api_secret
+    end
+  end
+
+  after do
+    MagicBell.reset_config
+  end
+
   describe ".configure" do
-    before do
-      MagicBell.configure do |config|
-        config.api_key = api_key
-        config.api_secret = api_secret
-      end
-    end
-
-    after do
-      MagicBell.reset_config
-    end
-
     it "configures the gem" do
       expect(MagicBell.api_key).to eq(api_key)
       expect(MagicBell.api_secret).to eq(api_secret)
@@ -26,16 +26,14 @@ describe MagicBell do
   end
 
   describe "#hmac" do
-    let(:api_secret) { "dummy_api_secret" }
     let(:user_email) { "john@example.com" }
+    let(:magicbell) { MagicBell::Client.new }
 
-    it "calculates the hmac for the given string" do
-      ENV["MAGICBELL_API_SECRET"] = "dummy_api_secret"
+    it "calls the hmac method on MagicBell::Client object" do
+      expect(MagicBell::Client).to receive(:new).with(api_key: MagicBell.api_key, api_secret: MagicBell.api_secret).and_return(magicbell)
+      expect(magicbell).to receive(:hmac).with(user_email)
 
-      hmac = MagicBell.hmac(user_email)
-      # expect(MagicBell.hmac(user_email)).to eq("6rsCIEh9sNFbxMO4NQfBMG88eXWMufPPUubCTggCfnE=")
-      sha256_digest = OpenSSL::Digest.new('sha256')
-      expect(base64_decode(hmac)).to eq(OpenSSL::HMAC.digest(sha256_digest, api_secret, user_email))
+      MagicBell.hmac(user_email)
     end
   end
 end

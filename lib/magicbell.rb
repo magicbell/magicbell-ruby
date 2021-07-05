@@ -46,25 +46,16 @@ module MagicBell
       @config = Config.new
     end
 
-    def authentication_headers
+    def authentication_headers(client_api_key: nil, client_api_secret: nil)
       {
-        "X-MAGICBELL-API-KEY" => api_key,
-        "X-MAGICBELL-API-SECRET" => api_secret
+        "X-MAGICBELL-API-KEY" => client_api_key || api_key,
+        "X-MAGICBELL-API-SECRET" => client_api_secret || api_secret
       }
     end
 
     # Calculate HMAC for user's email
     def hmac(message)
-      digest = sha256_digest
-      secret = api_secret
-
-      Base64.encode64(OpenSSL::HMAC.digest(digest, secret, message)).strip
-    end
-
-    private
-
-    def sha256_digest
-      OpenSSL::Digest::Digest.new('sha256')
+      MagicBell::Client.new(api_key: api_key, api_secret: api_secret).hmac(message)
     end
   end
 end
