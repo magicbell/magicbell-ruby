@@ -209,17 +209,17 @@ end
 
 ### Calculate HMAC
 
-#### Using API secret from global configuration
+#### Using the API secret from global configuration
 ```
 user_email = "joe@example.com"
 hmac = MagicBell.hmac(user_email)
 ```
 
-#### Using a specific API secret
+#### Using a specific API secret from a client
 ```ruby
 user_email = "joe@example.com"
-
-hmac = MagicBell.hmac(user_email, client_api_secret: 'your_api_secret')
+magicbell = MagicBell::Client.new(api_key: 'your_api_key', api_secret: 'your_api_secret')
+hmac = magicbell.hmac(user_email)
 ```
 
 See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
