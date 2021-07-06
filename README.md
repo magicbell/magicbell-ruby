@@ -1,6 +1,6 @@
-# magicbell-ruby
+# MagicBell Ruby Library
 
-[MagicBell](https://magicbell.com) is an embeddable Notification Inbox for web & mobile applications.
+[MagicBell](https://magicbell.com) is the notification inbox for your web & mobile applications.
 
 Please familiarize yourself with the [core concepts of MagicBell](https://magicbell.com/docs/core-concepts) before using this gem.
 
@@ -126,7 +126,7 @@ user.notifications.each_page do |page|
 end
 ```
 
-### Mark a user notification as read/unread
+### Mark a user's notification as read/unread
 
 ```ruby
 magicbell = MagicBell::Client.new
@@ -178,30 +178,34 @@ rescue MagicBell::Client::HTTPError => e
 end
 ```
 
-## HMAC Authentication
+## HMAC authentication
+
+Please refer to our docs to know [how to turn on HMAC authentication](https://magicbell.com/docs/turn-on-hmac-authentication) for your MagicBell project.
 
 ### Calculate HMAC
 
-#### Using the API secret from global configuration
+This gem provides some helpers to calculate the HMAC for a user.
+
+You can use the `MagicBell.hmac` method. Note that in this case, the API secret, which is used to generate the HMAC, will be fetched from the global configuration.
 
 ```ruby
-user_email = "joe@example.com"
-hmac = MagicBell.hmac(user_email)
+hmac = MagicBell.hmac("joe@example.com")
 ```
 
-#### Using a specific API secret from a client
+You can also use the API secret of a specific client instance to calculate the HMAC:
 
 ```ruby
-user_email = "joe@example.com"
-magicbell = MagicBell::Client.new(api_key: 'your_api_key', api_secret: 'your_api_secret')
-hmac = magicbell.hmac(user_email)
-```
+magicbell = MagicBell::Client.new(
+  api_key: 'your_api_key',
+  api_secret: 'your_api_secret'
+)
 
-See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more information on turning on HMAC Authentication for your MagicBell Project
+hmac = magicbell.hmac("joe@example.com")
+```
 
 ## API docs
 
-Please visit [our website](https://magicbell.com) and [our docs](https://magicbell.io/docs) for more information.
+Please visit [our website](https://magicbell.com) and [our docs](https://magicbell.com/docs) for more information.
 
 ## Contact Us
 
