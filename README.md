@@ -178,42 +178,6 @@ rescue MagicBell::Client::HTTPError => e
 end
 ```
 
-## Rails integration
-
-### Customize Action URL
-
-When a user clicks on a notification in MagicBell's Notification Inbox, the Notification Inbox redirects the user to the first URL the body of the email notification. This URL is called the `action_url`.
-
-If you wish to redirect users to a different URL instead, provide an `action_url` in your mailers
-
-```ruby
-class NotificationMailer < ActionMailer::Base
-  ring_the_magicbell
-
-  def new_comment(comment)
-    # ...
-    magicbell_notification_action_url("https://myapp.com/comments/#{comment.id}")
-    # ...
-  end
-end
-```
-
-### Customize Notification Title
-
-The Notification inbox will use the subject of the email notification as a notification's title. If this behaviour isn't sutiable for your app, provide a title in your mailers
-
-```ruby
-class NotificationMailer < ActionMailer::Base
-  ring_the_magicbell
-
-  def new_comment(comment)
-    # ...
-    magicbell_notification_title("Richard posted a new comment")
-    # ...
-  end
-end
-```
-
 ## HMAC Authentication
 
 ### Calculate HMAC
