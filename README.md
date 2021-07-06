@@ -216,13 +216,7 @@ rescue MagicBell::Client::HTTPError => e
 end
 ```
 
-## HMAC authentication
-
-Please refer to our docs to know [how to turn on HMAC authentication](https://magicbell.com/docs/turn-on-hmac-authentication) for your MagicBell project.
-
-### Calculate HMAC
-
-This gem provides some helpers to calculate the HMAC for a user.
+### Calculate the HMAC secret for a user
 
 You can use the `MagicBell.hmac` method. Note that in this case, the API secret, which is used to generate the HMAC, will be fetched from the global configuration.
 
@@ -244,6 +238,8 @@ magicbell = MagicBell::Client.new(
 
 hmac = magicbell.hmac('joe@example.com')
 ```
+
+Please refer to our docs to know [how to turn on HMAC authentication](https://magicbell.com/docs/turn-on-hmac-authentication) for your MagicBell project.
 
 ## API docs
 
