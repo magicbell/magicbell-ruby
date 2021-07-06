@@ -7,11 +7,11 @@ require "magicbell/version"
 Gem::Specification.new do |s|
   s.name          = "magicbell"
   s.version       = MagicBell::VERSION
-  s.authors       = ["Hana Mohan", "Nisanth Chunduru"]
-  s.email         = ["hana@magicbell.io", "nisanth@supportbee.com"]
-  s.homepage      = "https://magicbell.io"
-  s.summary       = "Ruby wrapper for MagicBell.io"
-  s.description   = "Notifications like never before!"
+  s.authors       = ["Hana Mohan", "Nisanth Chunduru", "Rahmane Ousmane", "Josue Montano"]
+  s.email         = ["hana@magicbell.io", "nisanth@supportbee.com", "rahmane@magicbell.io", "josue@magicbell.io"]
+  s.homepage      = "https://magicbell.com"
+  s.summary       = "Ruby Library for MagicBell"
+  s.description   = "The notification inbox for your product"
   s.license       = "MIT"
 
   s.files = Dir["{lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
