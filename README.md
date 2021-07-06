@@ -1,30 +1,28 @@
 # magicbell-ruby
 
-[MagicBell](https://magicbell.io) is an embeddable Notification Inbox for web & mobile applications.
+[MagicBell](https://magicbell.com) is an embeddable Notification Inbox for web & mobile applications.
 
-Please familiarlize yourself with the [core concepts of MagicBell](https://developer.magicbell.io/docs/core-concepts) before using this gem.
+Please familiarize yourself with the [core concepts of MagicBell](https://magicbell.com/docs/core-concepts) before using this gem.
 
-This gem
+This gem:
 
-1. Makes it easy to interact with [MagicBell's REST API](https://developer.magicbell.io/reference) from Ruby.
-
-   You can use it to create a notification in your MagicBell project etc.
-
-2. Helps you calculate the HMAC for a user's email or external_id when you turn on [HMAC Authentication](https://developer.magicbell.io/docs/turn-on-hmac-authentication) for your MagicBell project
+1. Makes it easy to interact with [MagicBell's REST API](https://magicbell.com/docs/rest-api/overview) from Ruby. You can use it to create notifications in your project, fetch them, etc.
+2. Helps you calculate the HMAC for a user's email or external_id when you turn on [HMAC Authentication](https://magicbell.com/docs/turn-on-hmac-authentication) for your project.
 
 <img width="415" alt="MagicBell Notification Inbox" src="https://files.readme.io/c09b21a-image1.png">
 
 ## Installation
 
-Sign up at magicbell.io and obtain your MagicBell project's API Key and API Secret from the "Settings" section in your MagicBell dashboard.
+First, sign up at https://magicbell.com and grab your MagicBell project's API key and secret from the "Settings" section of your MagicBell dashboard.
 
-Add the gem to your app's Gemfile
+Then, add the gem to your app's Gemfile:
 
 ```ruby
+# Gemfile
 gem "magicbell"
 ```
 
-and install the gem
+and install it:
 
 ```
 bundle install
@@ -33,99 +31,97 @@ bundle install
 ## Configuration
 
 ### Global configuration
-The gem will automatically pick your MagicBell project's API Key and API Secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET` environment variables. Alternatively, provide the API Key and API Secret in an initializer
 
-```
-vim config/initializers/magicbell.rb
-```
+The gem will automatically pick your MagicBell project's API key and secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET` environment variables, respectively.
+
+Alternatively, you can configure your MagicBell manually. For example, for a rails project, create an initializer file for MagicBell and set your project's keys:
 
 ```ruby
 # config/initializers/magicbell.rb
 
 MagicBell.configure do |config|
-  config.api_key = "your_magicbell_api_key"
-  config.api_secret = "your_magicbell_api_secret"
+  config.api_key = "MAGICBELL_API_KEY"
+  config.api_secret = "MAGICBELL_API_SECRET"
 end
 ```
 
-### Per project configuration
-If you integrate more than one MagicBell project into your application, you may want to use different sets of API key and API client, per project.
-To achieve this, you can create a `MagicBell::Client` object, with a configuration that will override the global configuration.
+### Per-client configuration
+
+You may need to use a different API key and secret for each client if you integrate more than one MagicBell project into your application. To override the global configuration, provide the specific keys when you create instances of `MagicBell::Client`:
 
 ```ruby
-  magicbell_client = MagicBell::Client.new(
-    api_key: "your_project_magicbell_api_key",
-    api_secret: "your_project_magicbell_api_secret"
-  )
+magicbell = MagicBell::Client.new(
+  api_key: "MAGICBELL_PROJECT_API_KEY",
+  api_secret: "MAGICBELL_PROJECT_API_SECRET"
+)
 ```
-If a set of API key and API secret are not provided to the client, the global configuration will be used.
-## API Wrapper
 
-This gem makes it easy to interact with MagicBell's REST API https://developer.magicbell.io/reference from Ruby
+Keep in mind that instances of `MagicBell::Client` will default to the global configuration unless an API key and secret are provided.
+
+## API wrapper
 
 ### Create a notification
 
-Send a notification to one or many users by identifying them with their email address
+You can send a notification to one or many users by identifying them by their email address:
 
 ```ruby
 magicbell = MagicBell::Client.new
 magicbell.create_notification(
-  "title" => "Rob assigned a task to you",
-  "recipients" => [
-    {
-      email: "joe@example.com"
-    },
+  title: "Rob assigned a task to you",
+  recipients: [
+    { email: "joe@example.com" },
   ]
 )
 ```
 
-You can also identify users with their `external_id`, which is their ID in your database. That way, if their email address changes, they'd still have access to their notifications. You'll need to make sure you identify them with their `externalID` [in your frontend](https://developer.magicbell.io/docs/browser-js#identifying-users).
-
-```ruby
-     magicbell.create_notification(
-          title: "Welcome to Muziboo",
-          recipients: [{
-            external_id: "id_in_your_database"
-          }]
-        )
-```
-
-You can even provide content for the notification and a URL to redirect the user to when they click on the notification the MagicBell Notification Inbox
+Or you can identify users by an `external_id` (their ID in your database, for example):
 
 ```ruby
 magicbell = MagicBell::Client.new
 magicbell.create_notification(
-  "title" => "Rob assigned to a task to you",
-  "recipients" => [
-    {
-      email: "joe@example.com"
-    },
+  title: "Rob assigned a task to you",
+  recipients: [{
+    external_id: "DATABASE_ID"
+  }]
+)
+```
+
+This method has the benefit of allowing users to access their notifications when their email address changes. Make sure you identify users by their `externalID` when you [initialize the notification inbox](https://magicbell.com/docs/react/identifying-users), too.
+
+You can also provide content for the notification and a URL to redirect the user to when they click on the notification from the [notification inbox](https://magicbell.com/docs/adding-magicbell-to-your-product):
+
+```ruby
+magicbell = MagicBell::Client.new
+magicbell.create_notification(
+  title: "Rob assigned to a task to you",
+  content: "Hey Joe, can give this customer a demo of our app?",
+  action_url: "https://example.com/task_path",
+  recipients: [
+    { email: "joe@example.com" },
   ],
-  "content": "Hey Joe, can give this customer a demo of our app?",
-  "action_url" => "https://yourwebsite.com/task_path"
 )
 ```
 
 ### Fetch a user's notifications
 
-Fetch a user's notifications
+To fetch a user's notifications you can do this:
 
 ```ruby
 magicbell = MagicBell::Client.new
+
 user = magicbell.user_with_email("joe@example.com")
-user_notifications = user.notifications
-user_notifications.each { |user_notification| puts user_notification.attribute("title") }
+user.notifications.each { |notification| puts notification.attribute("title") }
 ```
 
-Please note that the example above fetches the user's 15 most recent notification (the default number of notifications per page) If you'd like to fetch subsequent pages, use
+Please note that the example above fetches the user's 15 most recent notifications (the default number per page). If you'd like to fetch subsequent pages, use the `each_page` method instead:
 
 ```ruby
 magicbell = MagicBell::Client.new
+
 user = magicbell.user_with_email("joe@example.com")
-user_notifications = user.notifications
-user_notifications.each_page do |page|
-  page.each do |user_notification|
-    puts user_notification.attribute("title")
+user.notifications.each_page do |page|
+  page.each do |notification|
+    puts notification.attribute("title")
   end
 end
 ```
@@ -134,43 +130,56 @@ end
 
 ```ruby
 magicbell = MagicBell::Client.new
+
 user = magicbell.user_with_email("joe@example.com")
-user_notification = user.notifications.first
-user_notification.mark_as_read
-user_notification.mark_as_unread
+
+notification = user.notifications.first
+notification.mark_as_read
+notification.mark_as_unread
 ```
 
-### Mark all notifications of a user as read/seen
+### Mark all notifications of a user as read
 
 ```ruby
 magicbell = MagicBell::Client.new
+
 user = magicbell.user_with_email("joe@example.com")
 user.mark_all_notifications_as_read
+```
+
+### Mark all notifications of a user as seen
+
+```ruby
+magicbell = MagicBell::Client.new
+
+user = magicbell.user_with_email("joe@example.com")
 user.mark_all_notifications_as_seen
 ```
 
 ### Error handling
 
-Please note that the gem raises a `MagicBell::Client::HTTPError` if an API returns a non 2xx response
+This gem raises a `MagicBell::Client::HTTPError` if an API returns a non-2xx response.
 
 ```ruby
 begin
   magicbell = MagicBell::Client.new
   magicbell.create_notification(
-    "title" => "Rob assigned to a task to you"
+    title: "Rob assigned to a task to you"
   )
 rescue MagicBell::Client::HTTPError => e
-  # Report the error to your error tracker
+  # Report the error to your error tracker, for example
   error_context = {
     response_status: e.response_status,
     response_headers: e.response_headers,
     response_body: e.response_body
   }
+
   ErrorReporter.report(e, context: error_context)
 end
 ```
 
 ## Rails integration
+
 ### Customize Action URL
 
 When a user clicks on a notification in MagicBell's Notification Inbox, the Notification Inbox redirects the user to the first URL the body of the email notification. This URL is called the `action_url`.
@@ -210,12 +219,14 @@ end
 ### Calculate HMAC
 
 #### Using the API secret from global configuration
-```
+
+```ruby
 user_email = "joe@example.com"
 hmac = MagicBell.hmac(user_email)
 ```
 
 #### Using a specific API secret from a client
+
 ```ruby
 user_email = "joe@example.com"
 magicbell = MagicBell::Client.new(api_key: 'your_api_key', api_secret: 'your_api_secret')
@@ -226,12 +237,8 @@ See https://developer.magicbell.io/docs/turn-on-hmac-authentication for more inf
 
 ## API docs
 
-Please visit our website https://magicbell.io and our API docs https://developer.magicbell.io for more information MagicBell's embeddable notification inbox and MagicBell's REST API
+Please visit [our website](https://magicbell.com) and [our docs](https://magicbell.io/docs) for more information.
 
 ## Contact Us
 
-Have a query or hit upon a problem? Create a post in our Developer Community https://community.magicbell.io or contact us at hello@magicbell.io
-
-```
-
-```
+Have a query or hit upon a problem? Feel free to contact us at [hello@magicbell.io](mailto:hello@magicbell.io).
