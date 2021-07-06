@@ -194,7 +194,7 @@ user.mark_all_notifications_as_seen
 
 ### Error handling
 
-This gem raises a `MagicBell::Client::HTTPError` if an API returns a non-2xx response.
+This gem raises a `MagicBell::Client::HTTPError` if the MagicBell API returns a non-2xx response.
 
 ```ruby
 require 'magicbell'
