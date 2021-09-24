@@ -74,6 +74,7 @@ describe MagicBell::Client do
     end
 
     context "API response was not a 2xx response" do
+
       let(:title) { "Welcome to Muziboo" }
       let(:body) do
         {
@@ -82,11 +83,10 @@ describe MagicBell::Client do
           }
         }.to_json
       end
+      let(:magicbell) { MagicBell::Client.new }
 
       it "raises an error" do
         stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
-
-        magicbell = MagicBell::Client.new
 
         exception_thrown = nil
         begin
@@ -113,8 +113,6 @@ describe MagicBell::Client do
           ]
         }.to_json
         stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
-
-        magicbell = MagicBell::Client.new
 
         exception_thrown = nil
         begin
