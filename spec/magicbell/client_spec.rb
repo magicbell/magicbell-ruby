@@ -85,20 +85,23 @@ describe MagicBell::Client do
       end
       let(:magicbell) { MagicBell::Client.new }
 
-      it "raises an error" do
-        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
-
-        exception_thrown = nil
-        begin
-          magicbell.create_notification(title: title)
-        rescue MagicBell::Client::HTTPError => e
-          exception_thrown = e
+      context("and there is no response body") do
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
         end
 
-        expect(exception_thrown).to not_be_nil()
-        expect(exception_thrown.response_status).to eq(422)
-        expect(exception_thrown.response_headers).to eq({})
-        expect(exception_thrown.response_body).to eq("")
+        it "raises an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq("")
+        end
       end
 
       it "raises and displays an error" do
@@ -122,7 +125,6 @@ describe MagicBell::Client do
           exception_thrown = e
         end
 
-        expect(exception_thrown).to not_be_nil()
         expect(exception_thrown.response_status).to eq(422)
         expect(exception_thrown.response_headers).to eq({})
         expect(exception_thrown.response_body).to eq(response_body)
