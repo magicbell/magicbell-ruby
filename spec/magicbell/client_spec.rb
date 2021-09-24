@@ -139,10 +139,7 @@ describe MagicBell::Client do
       end
 
       context("and there is a response body with no errors block") do
-        let(:response_body) do
-          {
-          }.to_json
-        end
+        let(:response_body) { {}.to_json }
 
         before do
           stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
@@ -164,11 +161,7 @@ describe MagicBell::Client do
       end
 
       context("and there is a response body with with a nonarray errors block") do
-        let(:response_body) do
-          {
-            "errors" => "testing 1234"
-          }.to_json
-        end
+        let(:response_body) { { "errors" => "testing 1234" }.to_json }
 
         before do
           stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
