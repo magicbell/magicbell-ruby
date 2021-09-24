@@ -83,17 +83,17 @@ describe MagicBell::Client do
         stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
 
         magicbell = MagicBell::Client.new
-        expect do
-          magicbell.create_notification(title: "Welcome to Muziboo")
-        end.to raise_error(MagicBell::Client::HTTPError)
 
+        exception_thrown = nil
         begin
           magicbell.create_notification(title: "Welcome to Muziboo")
         rescue MagicBell::Client::HTTPError => e
-          expect(e.response_status).to eq(422)
-          expect(e.response_headers).to eq({})
-          expect(e.response_body).to eq("")
+          exception_thrown = e
         end
+
+        expect(exception_thrown.response_status).to eq(422)
+        expect(exception_thrown.response_headers).to eq({})
+        expect(exception_thrown.response_body).to eq("")
       end
       it "raises and displays an error" do
         body = {
@@ -116,18 +116,18 @@ describe MagicBell::Client do
         stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
 
         magicbell = MagicBell::Client.new
-        expect do
-          magicbell.create_notification(title: "Welcome to Muziboo")
-        end.to raise_error(MagicBell::Client::HTTPError)
 
+        exception_thrown = nil
         begin
           magicbell.create_notification(title: "Welcome to Muziboo")
         rescue MagicBell::Client::HTTPError => e
-          expect(e.response_status).to eq(422)
-          expect(e.response_headers).to eq({})
-          expect(e.response_body).to eq(response_body)
-          expect(e.errors.length).to eq(1)
+          exception_thrown = e
         end
+
+        expect(exception_thrown.response_status).to eq(422)
+        expect(exception_thrown.response_headers).to eq({})
+        expect(exception_thrown.response_body).to eq(response_body)
+        expect(exception_thrown.errors.length).to eq(1)
       end
     end
   end
