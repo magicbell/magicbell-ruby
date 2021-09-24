@@ -104,31 +104,38 @@ describe MagicBell::Client do
         end
       end
 
-      it "raises and displays an error" do
-        response_body = {
-          "errors"=>
-          [
-            {
-              "code" => "api_secret_not_provided",
-              "suggestion" => "Please provide the 'X-MAGICBELL-API-SECRET' header containing your MagicBell project's API secret. Alternatively, if you intend to use MagicBell's API in JavaScript in your web application's frontend, please provide the 'X-MAGICBELL-USER-EMAIL' header containing a user's email and the 'X-MAGICBELL-USER-HMAC' containing the user's HMAC.",
-              "message" => "API Secret not provided",
-              "help_link" => "https://developer.magicbell.io/reference#authentication"
-            }
-          ]
-        }.to_json
-        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
-
-        exception_thrown = nil
-        begin
-          magicbell.create_notification(title: title)
-        rescue MagicBell::Client::HTTPError => e
-          exception_thrown = e
+      context("and there is a response body with an errors block") do
+        let(:response_body) do
+          {
+            "errors"=>
+            [
+              {
+                "code" => "api_secret_not_provided",
+                "suggestion" => "Please provide the 'X-MAGICBELL-API-SECRET' header containing your MagicBell project's API secret. Alternatively, if you intend to use MagicBell's API in JavaScript in your web application's frontend, please provide the 'X-MAGICBELL-USER-EMAIL' header containing a user's email and the 'X-MAGICBELL-USER-HMAC' containing the user's HMAC.",
+                "message" => "API Secret not provided",
+                "help_link" => "https://developer.magicbell.io/reference#authentication"
+              }
+            ]
+          }.to_json
         end
 
-        expect(exception_thrown.response_status).to eq(422)
-        expect(exception_thrown.response_headers).to eq({})
-        expect(exception_thrown.response_body).to eq(response_body)
-        expect(exception_thrown.errors.length).to eq(1)
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+        end
+
+        it "raises and displays an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq(response_body)
+          expect(exception_thrown.errors.length).to eq(1)
+        end
       end
     end
   end
