@@ -95,6 +95,7 @@ describe MagicBell::Client do
           exception_thrown = e
         end
 
+        expect(exception_thrown).to not_be_nil()
         expect(exception_thrown.response_status).to eq(422)
         expect(exception_thrown.response_headers).to eq({})
         expect(exception_thrown.response_body).to eq("")
@@ -121,6 +122,7 @@ describe MagicBell::Client do
           exception_thrown = e
         end
 
+        expect(exception_thrown).to not_be_nil()
         expect(exception_thrown.response_status).to eq(422)
         expect(exception_thrown.response_headers).to eq({})
         expect(exception_thrown.response_body).to eq(response_body)
