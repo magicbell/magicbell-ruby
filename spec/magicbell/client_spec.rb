@@ -137,6 +137,31 @@ describe MagicBell::Client do
           expect(exception_thrown.errors.length).to eq(1)
         end
       end
+
+      context("and there is a response body with no errors block") do
+        let(:response_body) do
+          {
+          }.to_json
+        end
+
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+        end
+
+        it "raises and displays an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq(response_body)
+          expect(exception_thrown.errors.length).to eq(0)
+        end
+      end
     end
   end
 

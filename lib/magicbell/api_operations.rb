@@ -44,7 +44,7 @@ module MagicBell
       e.errors = []
       unless e.response_body.nil? || e.response_body.empty?
         body = JSON.parse(response.body)
-        e.errors = body["errors"]
+        e.errors = body["errors"] || []
         e.errors.each do |error, index|
           puts "#{error["suggestion"].red}"
           puts "#{error["help_link"].blue.on_white}"
