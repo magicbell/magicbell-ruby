@@ -74,10 +74,11 @@ describe MagicBell::Client do
     end
 
     context "API response was not a 2xx response" do
+      let(:title) { "Welcome to Muziboo" }
       let(:body) do
         {
           "notification" => {
-            "title" => "Welcome to Muziboo"
+            "title" => title
           }
         }.to_json
       end
@@ -89,7 +90,7 @@ describe MagicBell::Client do
 
         exception_thrown = nil
         begin
-          magicbell.create_notification(title: "Welcome to Muziboo")
+          magicbell.create_notification(title: title)
         rescue MagicBell::Client::HTTPError => e
           exception_thrown = e
         end
@@ -117,7 +118,7 @@ describe MagicBell::Client do
 
         exception_thrown = nil
         begin
-          magicbell.create_notification(title: "Welcome to Muziboo")
+          magicbell.create_notification(title: title)
         rescue MagicBell::Client::HTTPError => e
           exception_thrown = e
         end
