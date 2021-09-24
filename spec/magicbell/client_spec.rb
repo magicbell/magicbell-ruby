@@ -74,12 +74,15 @@ describe MagicBell::Client do
     end
 
     context "API response was not a 2xx response" do
-      it "raises an error" do
-        body = {
+      let(:body) do
+        {
           "notification" => {
             "title" => "Welcome to Muziboo"
           }
         }.to_json
+      end
+
+      it "raises an error" do
         stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
 
         magicbell = MagicBell::Client.new
@@ -95,13 +98,8 @@ describe MagicBell::Client do
         expect(exception_thrown.response_headers).to eq({})
         expect(exception_thrown.response_body).to eq("")
       end
-      it "raises and displays an error" do
-        body = {
-          "notification" => {
-            "title" => "Welcome to Muziboo"
-          }
-        }.to_json
 
+      it "raises and displays an error" do
         response_body = {
           "errors"=>
           [
