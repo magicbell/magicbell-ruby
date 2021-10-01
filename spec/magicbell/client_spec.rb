@@ -74,59 +74,111 @@ describe MagicBell::Client do
     end
 
     context "API response was not a 2xx response" do
-      it "raises an error" do
-        body = {
+
+      let(:title) { "Welcome to Muziboo" }
+      let(:body) do
+        {
           "notification" => {
-            "title" => "Welcome to Muziboo"
+            "title" => title
           }
         }.to_json
-        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
+      end
+      let(:magicbell) { MagicBell::Client.new }
 
-        magicbell = MagicBell::Client.new
-        expect do
-          magicbell.create_notification(title: "Welcome to Muziboo")
-        end.to raise_error(MagicBell::Client::HTTPError)
+      context("and there is no response body") do
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422)
+        end
 
-        begin
-          magicbell.create_notification(title: "Welcome to Muziboo")
-        rescue MagicBell::Client::HTTPError => e
-          expect(e.response_status).to eq(422)
-          expect(e.response_headers).to eq({})
-          expect(e.response_body).to eq("")
+        it "raises an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq("")
         end
       end
-      it "raises and displays an error" do
-        body = {
-          "notification" => {
-            "title" => "Welcome to Muziboo"
-          }
-        }.to_json
 
-        response_body = {
-          "errors"=>
-          [
-            {
-              "code" => "api_secret_not_provided",
-              "suggestion" => "Please provide the 'X-MAGICBELL-API-SECRET' header containing your MagicBell project's API secret. Alternatively, if you intend to use MagicBell's API in JavaScript in your web application's frontend, please provide the 'X-MAGICBELL-USER-EMAIL' header containing a user's email and the 'X-MAGICBELL-USER-HMAC' containing the user's HMAC.",
-              "message" => "API Secret not provided",
-              "help_link" => "https://developer.magicbell.io/reference#authentication"
-            }
-          ]
-        }.to_json
-        stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+      context("and there is a response body with an errors block") do
+        let(:response_body) do
+          {
+            "errors"=>
+            [
+              {
+                "code" => "api_secret_not_provided",
+                "suggestion" => "Please provide the 'X-MAGICBELL-API-SECRET' header containing your MagicBell project's API secret. Alternatively, if you intend to use MagicBell's API in JavaScript in your web application's frontend, please provide the 'X-MAGICBELL-USER-EMAIL' header containing a user's email and the 'X-MAGICBELL-USER-HMAC' containing the user's HMAC.",
+                "message" => "API Secret not provided",
+                "help_link" => "https://developer.magicbell.io/reference#authentication"
+              }
+            ]
+          }.to_json
+        end
 
-        magicbell = MagicBell::Client.new
-        expect do
-          magicbell.create_notification(title: "Welcome to Muziboo")
-        end.to raise_error(MagicBell::Client::HTTPError)
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+        end
 
-        begin
-          magicbell.create_notification(title: "Welcome to Muziboo")
-        rescue MagicBell::Client::HTTPError => e
-          expect(e.response_status).to eq(422)
-          expect(e.response_headers).to eq({})
-          expect(e.response_body).to eq(response_body)
-          expect(e.errors.length).to eq(1)
+        it "raises and displays an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq(response_body)
+          expect(exception_thrown.errors.length).to eq(1)
+        end
+      end
+
+      context("and there is a response body with no errors block") do
+        let(:response_body) { {}.to_json }
+
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+        end
+
+        it "raises and displays an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq(response_body)
+          expect(exception_thrown.errors.length).to eq(0)
+        end
+      end
+
+      context("and there is a response body with with a nonarray errors block") do
+        let(:response_body) { { "errors" => "testing 1234" }.to_json }
+
+        before do
+          stub_request(:post, notifications_url).with(headers: headers, body: body).and_return(status: 422, body: response_body)
+        end
+
+        it "raises and displays an error" do
+          exception_thrown = nil
+          begin
+            magicbell.create_notification(title: title)
+          rescue MagicBell::Client::HTTPError => e
+            exception_thrown = e
+          end
+
+          expect(exception_thrown.response_status).to eq(422)
+          expect(exception_thrown.response_headers).to eq({})
+          expect(exception_thrown.response_body).to eq(response_body)
+          expect(exception_thrown.errors.length).to eq(0)
         end
       end
     end
