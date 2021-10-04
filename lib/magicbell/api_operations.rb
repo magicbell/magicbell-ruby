@@ -46,10 +46,14 @@ module MagicBell
         body = JSON.parse(response.body)
         e.errors = body["errors"].is_a?(Array) ? body["errors"] : []
         e.errors.each do |error, index|
-          puts "#{error["suggestion"].red}"
-          puts "#{error["help_link"].blue.on_white}"
+          suggestion = error["suggestion"]
+          help_link = error["help_link"]
+
+          puts "#{suggestion.red}" if suggestion
+          puts "#{help_link.blue.on_white}" if help_link
         end
       end
+
       raise e
     end
   end
