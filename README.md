@@ -141,6 +141,9 @@ user = magicbell.user_with_email('joe@example.com')
 user.notifications.each { |notification| puts notification.attribute('title') }
 ```
 
+If you identify a user by an ID, you can use the
+`magicbell.user_with_external_id` method instead.
+
 Please note that the example above fetches the user's 15 most recent notifications (the default number per page). If you'd like to fetch subsequent pages, use the `each_page` method instead:
 
 ```ruby
