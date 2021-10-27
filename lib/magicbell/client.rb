@@ -18,10 +18,6 @@ module MagicBell
       MagicBell::Notification.create(self, notification_attributes)
     end
 
-    # def user(user_id)
-    #   MagicBell::User.find(user_id)
-    # end
-
     def user_with_email(email)
       client = self
       MagicBell::User.new(client, "email" => email)
