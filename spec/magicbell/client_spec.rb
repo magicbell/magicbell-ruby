@@ -5,6 +5,7 @@ describe MagicBell::Client do
   let(:api_secret) { "dummy_api_secret" }
   let(:api_host) { "https://api.magicbell.io" }
   let(:user_email) { "joe@example.com" }
+  let(:user_external_id) { "2acb4ac3-8a32-408a-a057-194dfbe89126" }
   let(:headers) {
     {
       "X-MAGICBELL-API-KEY" => api_key,
@@ -209,22 +210,50 @@ describe MagicBell::Client do
   describe "Fetching a user's notifications" do
     let("notifications_url") { "#{api_host}/notifications" }
 
-    it "can fetch a user's notifications" do
-      magicbell = MagicBell::Client.new
-      user = magicbell.user_with_email(user_email)
-      response_body = {
-        "notifications" => [
-          {
-            "id" => "a",
-          },
-          {
-            "id" => "b"
-          }
-        ]
-      }.to_json
-      fetch_notifications_request = stub_request(:get, notifications_url).with(headers: user_authentication_headers).and_return(status: 200, body: response_body)
-      user.notifications.each { |notification| notification.attribute("title") }
-      assert_requested(fetch_notifications_request)
+    context "when the user is identified by external_id" do
+      let(:user_authentication_headers) { headers.merge("X-MAGICBELL-USER-EXTERNAL-ID" => user_external_id) }
+
+      it "can fetch a user's notifications" do
+        magicbell = MagicBell::Client.new
+        user = magicbell.user_with_external_id(user_external_id)
+
+        response_body = {
+          "notifications" => [
+            {
+              "id" => "a",
+            },
+            {
+              "id" => "b"
+            }
+          ]
+        }.to_json
+        fetch_notifications_request = stub_request(:get, notifications_url).with(headers: user_authentication_headers).and_return(status: 200, body: response_body)
+        user.notifications.each { |notification| notification.attribute("title") }
+
+        assert_requested(fetch_notifications_request)
+      end
+    end
+
+    context "when the user is identified by email" do
+      it "can fetch a user's notifications" do
+        magicbell = MagicBell::Client.new
+        user = magicbell.user_with_email(user_email)
+
+        response_body = {
+          "notifications" => [
+            {
+              "id" => "a",
+            },
+            {
+              "id" => "b"
+            }
+          ]
+        }.to_json
+        fetch_notifications_request = stub_request(:get, notifications_url).with(headers: user_authentication_headers).and_return(status: 200, body: response_body)
+        user.notifications.each { |notification| notification.attribute("title") }
+
+        assert_requested(fetch_notifications_request)
+      end
     end
   end
 

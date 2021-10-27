@@ -23,6 +23,11 @@ module MagicBell
       MagicBell::User.new(client, "email" => email)
     end
 
+    def user_with_external_id(external_id)
+      client = self
+      MagicBell::User.new(client, "external_id" => external_id)
+    end
+
     def authentication_headers
       MagicBell.authentication_headers(client_api_key: @api_key, client_api_secret: @api_secret)
     end
