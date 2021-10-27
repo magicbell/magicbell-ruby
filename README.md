@@ -1,14 +1,20 @@
 # MagicBell Ruby Library
 
-This library provides convenient access to the [MagicBell REST API](https://magicbell.com/docs/rest-api/overview) from applications written in Ruby. It includes helpers for creating notifications, fetching them, and calculating the HMAC for a user.
+This library provides convenient access to the [MagicBell REST API](https://magicbell.com/docs/rest-api/overview)
+from applications written in Ruby. It includes helpers for creating
+notifications, fetching them, and calculating the HMAC for a user.
 
-[MagicBell](https://magicbell.com) is the notification inbox for your web and mobile applications. You may find it helpful to familiarize yourself with the [core concepts of MagicBell](https://magicbell.com/docs/core-concepts).
+[MagicBell](https://magicbell.com) is the notification inbox for your web and
+mobile applications. You may find it helpful to familiarize yourself with the
+[core concepts of MagicBell](https://magicbell.com/docs/core-concepts).
 
 <img width="415" alt="MagicBell Notification Inbox" src="https://files.readme.io/c09b21a-image1.png">
 
 ## Installation
 
-First, [sign up for a MagicBell account](https://magicbell.com) and grab your MagicBell project's API key and secret from the "Settings" section of your MagicBell dashboard.
+First, [sign up for a MagicBell account](https://magicbell.com) and grab your
+MagicBell project's API key and secret from the "Settings" section of your
+MagicBell dashboard.
 
 If you just want to use the package, run:
 
@@ -31,13 +37,18 @@ and run `bundle install` a usual.
 
 ## Configuration
 
-The library needs to be configured with your MagicBell project's API key and secret.
+The library needs to be configured with your MagicBell project's API key and
+secret.
 
 ### Global configuration
 
-By default, this library will automatically pick your MagicBell project's API key and secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET` environment variables, respectively.
+By default, this library will automatically pick your MagicBell project's API
+key and secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET`
+environment variables, respectively.
 
-Alternatively, you can configure your MagicBell manually. For example, for a rails project, create an initializer file for MagicBell and set your project's keys:
+Alternatively, you can configure your MagicBell manually. For example, for a
+rails project, create an initializer file for MagicBell and set your project's
+keys:
 
 ```ruby
 # config/initializers/magicbell.rb
@@ -50,7 +61,8 @@ end
 
 ### Per-request configuration
 
-For apps that need to use multiple keys during the lifetime of a process, provide the specific keys when you create instances of `MagicBell::Client`:
+For apps that need to use multiple keys during the lifetime of a process,
+provide the specific keys when you create instances of `MagicBell::Client`:
 
 ```ruby
 require 'magicbell'
@@ -61,13 +73,15 @@ magicbell = MagicBell::Client.new(
 )
 ```
 
-Please keep in mind that any instance of `MagicBell::Client` will default to the global configuration unless an API key and secret are provided.
+Please keep in mind that any instance of `MagicBell::Client` will default to the
+global configuration unless an API key and secret are provided.
 
 ## Usage
 
 ### Create a notification
 
-You can send a notification to one or many users by identifying them by their email address:
+You can send a notification to one or many users by identifying them by their
+email address:
 
 ```ruby
 require 'magicbell'
@@ -97,7 +111,9 @@ magicbell.create_notification(
 )
 ```
 
-This method has the benefit of allowing users to access their notifications when their email address changes. Make sure you identify users by their `externalID` when you [initialize the notification inbox](https://magicbell.com/docs/react/identifying-users), too.
+This method has the benefit of allowing users to access their notifications when
+their email address changes. Make sure you identify users by their `externalID`
+when you [initialize the notification inbox](https://magicbell.com/docs/react/identifying-users), too.
 
 You can also provide other data accepted by [our API](https://magicbell.com/docs/rest-api/reference):
 
@@ -144,7 +160,9 @@ user.notifications.each { |notification| puts notification.attribute('title') }
 If you identify a user by an ID, you can use the
 `magicbell.user_with_external_id` method instead.
 
-Please note that the example above fetches the user's 15 most recent notifications (the default number per page). If you'd like to fetch subsequent pages, use the `each_page` method instead:
+Please note that the example above fetches the user's 15 most recent
+notifications (the default number per page). If you'd like to fetch subsequent
+pages, use the `each_page` method instead:
 
 ```ruby
 require 'magicbell'
@@ -197,7 +215,8 @@ user.mark_all_notifications_as_seen
 
 ### Error handling
 
-This gem raises a `MagicBell::Client::HTTPError` if the MagicBell API returns a non-2xx response.
+This gem raises a `MagicBell::Client::HTTPError` if the MagicBell API returns a
+non-2xx response.
 
 ```ruby
 require 'magicbell'
@@ -221,7 +240,9 @@ end
 
 ### Calculate the HMAC secret for a user
 
-You can use the `MagicBell.hmac` method. Note that in this case, the API secret, which is used to generate the HMAC, will be fetched from the global configuration.
+You can use the `MagicBell.hmac` method. Note that in this case, the API secret,
+which is used to generate the HMAC, will be fetched from the global
+configuration.
 
 ```ruby
 require 'magicbell'
@@ -229,7 +250,8 @@ require 'magicbell'
 hmac = MagicBell.hmac('joe@example.com')
 ```
 
-You can also use the API secret of a specific client instance to calculate the HMAC:
+You can also use the API secret of a specific client instance to calculate the
+HMAC:
 
 ```ruby
 require 'magicbell'
@@ -242,12 +264,15 @@ magicbell = MagicBell::Client.new(
 hmac = magicbell.hmac('joe@example.com')
 ```
 
-Please refer to our docs to know [how to turn on HMAC authentication](https://magicbell.com/docs/turn-on-hmac-authentication) for your MagicBell project.
+Please refer to our docs to know [how to turn on HMAC authentication](https://magicbell.com/docs/turn-on-hmac-authentication)
+for your MagicBell project.
 
 ## API docs
 
-Please visit [our website](https://magicbell.com) and [our docs](https://magicbell.com/docs) for more information.
+Please visit [our website](https://magicbell.com) and
+[our docs](https://magicbell.com/docs) for more information.
 
 ## Contact Us
 
-Have a query or hit upon a problem? Feel free to contact us at [hello@magicbell.io](mailto:hello@magicbell.io).
+Have a query or hit upon a problem? Feel free to contact us at
+[hello@magicbell.io](mailto:hello@magicbell.io).
