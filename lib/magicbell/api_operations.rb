@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'colorize'
 module MagicBell
@@ -29,14 +31,14 @@ module MagicBell
     protected
 
     def default_headers
-      authentication_headers.merge({ "Content-Type" => "application/json", "Accept"=> "application/json" })
+      authentication_headers.merge({ 'Content-Type' => 'application/json', 'Accept'=> 'application/json' })
     end
 
     private
 
     def raise_http_error_unless_2xx_response(response)
       return if response.success?
-      
+
       e = MagicBell::Client::HTTPError.new
       e.response_status = response.code
       e.response_headers = response.headers.to_h
@@ -44,13 +46,13 @@ module MagicBell
       e.errors = []
       unless e.response_body.nil? || e.response_body.empty?
         body = JSON.parse(response.body)
-        e.errors = body["errors"].is_a?(Array) ? body["errors"] : []
+        e.errors = body['errors'].is_a?(Array) ? body['errors'] : []
         e.errors.each do |error, index|
-          suggestion = error["suggestion"]
-          help_link = error["help_link"]
+          suggestion = error['suggestion']
+          help_link = error['help_link']
 
-          puts "#{suggestion.red}" if suggestion
-          puts "#{help_link.blue.on_white}" if help_link
+          puts suggestion.red.to_s if suggestion
+          puts help_link.blue.on_white.to_s if help_link
         end
       end
 
