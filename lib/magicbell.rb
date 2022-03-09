@@ -24,9 +24,6 @@ require 'magicbell/api_resources/user_notification_preferences'
 require 'magicbell/railtie' if defined?(Rails)
 
 module MagicBell
-  WIDGET_JAVASCRIPT_URL = 'https://assets.magicbell.io/widget.magicbell.js'
-  EXTRAS_CSS_URL = 'https://assets.magicbell.io/extras.magicbell.css'
-
   class << self
     extend Forwardable
 
