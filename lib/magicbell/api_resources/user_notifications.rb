@@ -1,11 +1,11 @@
 module MagicBell
   class UserNotifications < ApiResourceCollection
     def name
-      "notifications"
+      'notifications'
     end
 
     def path
-      "/notifications"
+      '/notifications'
     end
 
     def resource_class

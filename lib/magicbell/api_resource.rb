@@ -1,6 +1,6 @@
-require "active_support/inflector"
-require "active_support/core_ext/object/blank"
-require "json"
+require 'active_support/inflector'
+require 'active_support/core_ext/object/blank'
+require 'json'
 
 module MagicBell
   class ApiResource
@@ -10,7 +10,7 @@ module MagicBell
       end
 
       def find(client, id)
-        api_resource = new(client, "id" => id)
+        api_resource = new(client, 'id' => id)
         api_resource.retrieve
         api_resource
       end
@@ -34,7 +34,7 @@ module MagicBell
       @client = client
       @attributes = attributes
 
-      @id = @attributes["id"]
+      @id = @attributes['id']
       @retrieved = true if @id
     end
 
@@ -42,6 +42,7 @@ module MagicBell
       retrieve_unless_retrieved
       @attributes
     end
+
     alias_method :to_h, :attributes
 
     def attribute(attribute_name)
@@ -105,12 +106,12 @@ module MagicBell
 
     private
 
-    attr_reader :response,
-                :response_hash
-    
+    attr_reader :response, :response_hash
+
     def retrieve_unless_retrieved
       return unless id # Never retrieve a new unsaved resource
       return if @retrieved
+
       retrieve
     end
 

@@ -44,6 +44,7 @@ module MagicBell
       loop do
         yield(current_page)
         break if current_page.last_page?
+
         current_page = current_page.next_page
       end
     end
@@ -58,31 +59,31 @@ module MagicBell
 
     def current_page
       retrieve_unless_retrieved
-      response_hash["current_page"]
+      response_hash['current_page']
     end
 
     def total_pages
       retrieve_unless_retrieved
-      response_hash["total_pages"]
+      response_hash['total_pages']
     end
 
     def per_page
       retrieve_unless_retrieved
-      response_hash["per_page"]
+      response_hash['per_page']
     end
 
     private
 
-    attr_reader :response,
-                :response_hash
-    
+    attr_reader :response, :response_hash
+
     def resources
       retrieve_unless_retrieved
-      return @resources
+      @resources
     end
-    
+
     def retrieve_unless_retrieved
       return if @retrieved
+
       retrieve
     end
   end

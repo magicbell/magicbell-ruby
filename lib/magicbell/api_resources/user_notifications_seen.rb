@@ -1,7 +1,7 @@
 module MagicBell
   class UserNotificationsSeen < SingletonApiResource
     def path
-      "/notifications/seen"
+      '/notifications/seen'
     end
   end
 end

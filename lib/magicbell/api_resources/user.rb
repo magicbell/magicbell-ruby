@@ -6,8 +6,8 @@ module MagicBell
 
     def initialize(client, attributes)
       @client = client
-      @email = attributes["email"]
-      @external_id = attributes["external_id"]
+      @email = attributes['email']
+      @external_id = attributes['external_id']
 
       super(client, attributes)
     end
@@ -49,9 +49,9 @@ module MagicBell
 
     def authentication_headers
       if external_id
-        MagicBell.authentication_headers.merge("X-MAGICBELL-USER-EXTERNAL-ID" => external_id)
+        MagicBell.authentication_headers.merge('X-MAGICBELL-USER-EXTERNAL-ID' => external_id)
       elsif email
-        MagicBell.authentication_headers.merge("X-MAGICBELL-USER-EMAIL" => email)
+        MagicBell.authentication_headers.merge('X-MAGICBELL-USER-EMAIL' => email)
       end
     end
   end

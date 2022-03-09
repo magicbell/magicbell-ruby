@@ -20,12 +20,12 @@ module MagicBell
 
     def user_with_email(email)
       client = self
-      MagicBell::User.new(client, "email" => email)
+      MagicBell::User.new(client, 'email' => email)
     end
 
     def user_with_external_id(external_id)
       client = self
-      MagicBell::User.new(client, "external_id" => external_id)
+      MagicBell::User.new(client, 'external_id' => external_id)
     end
 
     def authentication_headers
@@ -34,8 +34,9 @@ module MagicBell
 
     def hmac(message)
       secret = @api_secret || MagicBell.api_secret
+      digest = OpenSSL::HMAC.digest(sha256_digest, secret, message)
 
-      Base64.encode64(OpenSSL::HMAC::digest(sha256_digest, secret, message)).strip
+      Base64.encode64(digest).strip
     end
 
     private

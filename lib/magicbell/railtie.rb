@@ -1,5 +1,5 @@
-require "rails/railtie"
-require "magicbell/action_mailer_extension"
+require 'rails/railtie'
+require 'magicbell/action_mailer_extension'
 
 module MagicBell
   class Railtie < Rails::Railtie

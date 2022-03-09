@@ -2,7 +2,7 @@ module MagicBell
   class UserNotification < ApiResource
     class << self
       def path
-        "/notifications"
+        '/notifications'
       end
     end
 
@@ -11,11 +11,11 @@ module MagicBell
     end
 
     def mark_as_read
-      UserNotificationRead.new(@client, "user_notification" => self).create
+      UserNotificationRead.new(@client, 'user_notification' => self).create
     end
 
     def mark_as_unread
-      UserNotificationUnread.new(@client, "user_notification" => self).create
+      UserNotificationUnread.new(@client, 'user_notification' => self).create
     end
   end
 end
