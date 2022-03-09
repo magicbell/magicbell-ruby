@@ -18,4 +18,8 @@ module MagicBell
       headers["X-MagicBell-Notification-Skip"] = true
     end
   end
+
+  def self.max_network_reties
+    # code here
+  end
 end

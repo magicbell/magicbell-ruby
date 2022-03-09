@@ -76,12 +76,23 @@ module MagicBell
     end
 
     def create
-      response = @client.post(
-        create_url,
-        body: { name => attributes }.to_json,
-        headers: extra_headers
-      )
-      parse_response(response)
+      begin
+        retries ||= 0
+
+        response = @client.post(
+          create_url,
+          body: { name => attributes }.to_json,
+          headers: extra_headers
+        )
+
+        parse_response(response)
+      rescue MagicBell::Client::HTTPError => e
+        retry if server_error(e) && can_retry_again((retries += 1))
+        raise e
+      rescue  Net::OpenTimeout => e
+        retry if can_retry_again(retries += 1)
+        raise
+      end
 
       self
     end
@@ -105,12 +116,21 @@ module MagicBell
 
     private
 
+    def can_retry_again(retries)
+      (retries <= MagicBell.max_network_retries)
+    end
+
+    def server_error(server_error)
+      server_error.response_status > 499 || server_error.response_status == 408
+    end
+
     attr_reader :response,
                 :response_hash
-    
+
     def retrieve_unless_retrieved
       return unless id # Never retrieve a new unsaved resource
       return if @retrieved
+
       retrieve
     end
 
