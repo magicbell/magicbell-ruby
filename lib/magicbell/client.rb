@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicBell
   class Client
     class HTTPError < StandardError
@@ -14,18 +16,16 @@ module MagicBell
       @api_secret = api_secret
     end
 
-    def create_notification(notification_attributes)
-      MagicBell::Notification.create(self, notification_attributes)
+    def create_broadcast(notification_attributes)
+      MagicBell::Broadcast.create(self, notification_attributes)
     end
 
     def user_with_email(email)
-      client = self
-      MagicBell::User.new(client, 'email' => email)
+      MagicBell::User.new(self, 'email' => email)
     end
 
     def user_with_external_id(external_id)
-      client = self
-      MagicBell::User.new(client, 'external_id' => external_id)
+      MagicBell::User.new(self, 'external_id' => external_id)
     end
 
     def authentication_headers

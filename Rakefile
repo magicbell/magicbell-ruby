@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 begin
   require 'bundler/setup'
 rescue LoadError
-  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+  puts 'Run `gem install bundler` and `bundle install` to run rake tasks'
 end
 
 require 'rdoc/task'
@@ -30,12 +32,6 @@ task default: :test
 #   GEM_HOST_API_KEY="our_rubygems_api_key" bundle exec rake publish_to_rubygems
 task :publish_to_rubygems do
   `gem build magicbell.gemspec`
-  require_relative "lib/magicbell"
+  require_relative 'lib/magicbell'
   `gem push magicbell-#{MagicBell::VERSION}.gem`
-end
-
-task :console do
-  require_relative "lib/magicbell"
-  require "pry"
-  binding.pry
 end

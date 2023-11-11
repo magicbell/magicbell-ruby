@@ -1,10 +1,6 @@
 name: Run all tests
 
-on:
-  pull_request:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
   test:
@@ -12,42 +8,18 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - 2.4
-          - 2.5
-          - 2.6
-          - 2.7
-        gemfile:
-          - Gemfile
-          - gemfiles/Gemfile.rails-4.2.x
-          - gemfiles/Gemfile.rails-5.0.x
-          - gemfiles/Gemfile.rails-5.1.x
-          - gemfiles/Gemfile.rails-5.2.x
-        exclude:
-          - gemfile: gemfiles/Gemfile.rails-4.2.x
-            ruby: 2.7
+          - 3.0
+          - 3.1
+          - 3.2
 
     name: Run gem tests
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-      - name: Cache gems
-        uses: actions/cache@v1
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}
-          restore-keys: |
-            ${{ runner.os }}-gems-${{ matrix.ruby }}-${{ matrix.gemfile }}
-      - name: Install bundler 1.17.3
-        run: gem install bundler -v 1.17.3
-      - name: Install gems
-        run: |
-          bundle _1.17.3_ config path vendor/bundle
-          bundle _1.17.3_ install --gemfile=${{ matrix.gemfile }} \
-                                  --jobs 4 --retry 3
+          bundler-cache: true
       - name: Run tests
         run: |
-          bundle _1.17.3_ exec --gemfile=${{ matrix.gemfile }} \
-                               rspec
+          bundle exec rspec

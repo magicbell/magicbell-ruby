@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'forwardable'
 
 require 'openssl'
@@ -12,6 +14,7 @@ require 'magicbell/api_resource'
 require 'magicbell/singleton_api_resource'
 require 'magicbell/api_resource_collection'
 require 'magicbell/api_resources/notification'
+require 'magicbell/api_resources/broadcast'
 require 'magicbell/api_resources/user'
 require 'magicbell/api_resources/user_notification'
 require 'magicbell/api_resources/user_notifications'
@@ -20,8 +23,6 @@ require 'magicbell/api_resources/user_notification_unread'
 require 'magicbell/api_resources/user_notifications_read'
 require 'magicbell/api_resources/user_notifications_seen'
 require 'magicbell/api_resources/user_notification_preferences'
-
-require 'magicbell/railtie' if defined?(Rails)
 
 module MagicBell
   class << self

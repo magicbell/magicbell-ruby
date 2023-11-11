@@ -33,14 +33,16 @@ source 'https://rubygems.org'
 gem 'magicbell'
 ```
 
-and run `bundle install` a usual.
+and run
+
+`bundle install`
 
 ## Configuration
 
 The library needs to be configured with your MagicBell project's API key and
 secret.
 
-### Global configuration
+### Global Configuration
 
 By default, this library will automatically pick your MagicBell project's API
 key and secret from the `MAGICBELL_API_KEY` and `MAGICBELL_API_SECRET`
@@ -112,7 +114,7 @@ magicbell.create_notification(
 ```
 
 This method has the benefit of allowing users to access their notifications when
-their email address changes. Make sure you identify users by their `externalID`
+their email address changes. Make sure you identify users by their `external_id`
 when you [initialize the notification inbox](https://magicbell.com/docs/react/identifying-users), too.
 
 You can also provide other data accepted by [our API](https://magicbell.com/docs/rest-api/reference):
@@ -121,7 +123,7 @@ You can also provide other data accepted by [our API](https://magicbell.com/docs
 require 'magicbell'
 
 magicbell = MagicBell::Client.new
-magicbell.create_notification(
+magicbell.create_broadcast(
   title: 'Rob assigned to a task to you',
   content: 'Hey Joe, can give this customer a demo of our app?',
   action_url: 'https://example.com/task_path',

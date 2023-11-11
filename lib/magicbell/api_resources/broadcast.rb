@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module MagicBell
-  class Notification < ApiResource
+  class Broadcast < ApiResource
   end
 end

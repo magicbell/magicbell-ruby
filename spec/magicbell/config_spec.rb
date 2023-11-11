@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe MagicBell::Config do
   describe "#api_host" do
     it "should default to api.magicbell.io" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe MagicBell do
   let(:api_key) { "dummy_api_key" }
   let(:api_secret) { "dummy_api_secret" }

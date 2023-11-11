@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicBell
   class UserNotificationUnread < SingletonApiResource
     attr_reader :user_notification

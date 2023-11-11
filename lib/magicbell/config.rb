@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicBell
   class Config
     attr_writer :api_key, :api_secret, :api_host
@@ -15,7 +17,7 @@ module MagicBell
     end
 
     def api_host
-      @api_host || ENV['MAGICBELL_API_HOST'] || 'https://api.magicbell.io'
+      @api_host || ENV['MAGICBELL_API_HOST'] || 'https://api.magicbell.com'
     end
   end
 end
