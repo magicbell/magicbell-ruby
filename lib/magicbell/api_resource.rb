@@ -2,7 +2,6 @@
 
 require 'active_support/inflector'
 require 'active_support/core_ext/object/blank'
-require 'json'
 
 module MagicBell
   class ApiResource
@@ -52,10 +51,7 @@ module MagicBell
     end
 
     def retrieve
-      response = @client.get(url)
-      parse_response(response)
-
-      self
+      @client.get(url)
     end
 
     def name
@@ -79,25 +75,19 @@ module MagicBell
     end
 
     def create
-      response = @client.post(
+      @client.post(
         create_url,
         body: { name => attributes }.to_json,
         headers: extra_headers
       )
-      parse_response(response)
-
-      self
     end
 
     def update(new_attributes = {})
-      response = @client.put(
+      @client.put(
         url,
         body: new_attributes.to_json,
         headers: extra_headers
       )
-      parse_response(response)
-
-      self
     end
 
     protected
@@ -115,15 +105,6 @@ module MagicBell
       return if @retrieved
 
       retrieve
-    end
-
-    def parse_response(response)
-      @response = response
-      unless response.body.blank?
-        @response_hash = JSON.parse(@response.body)
-        @attributes = @response_hash[name]
-      end
-      @retrieved = true
     end
   end
 end

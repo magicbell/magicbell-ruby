@@ -10,15 +10,12 @@ module MagicBell
 
     # @todo Add examples
     def retrieve
-      @response = @client.get(
+      res = @client.get(
         url,
         query: @query_params
       )
-      @response_hash = JSON.parse(response.body)
-      @resources = response_hash[name].map { |resource_attributes| resource_class.new(@client, resource_attributes) }
-      @retrieved = true
-
-      self
+      @retrieved = true if res.success?
+      res
     end
 
     def to_a

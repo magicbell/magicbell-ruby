@@ -123,7 +123,7 @@ You can also provide other data accepted by [our API](https://magicbell.com/docs
 require 'magicbell'
 
 magicbell = MagicBell::Client.new
-magicbell.create_notification(
+magicbell.create_broadcast(
   title: 'Rob assigned to a task to you',
   content: 'Hey Joe, can give this customer a demo of our app?',
   action_url: 'https://example.com/task_path',
