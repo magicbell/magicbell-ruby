@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'json'
-require 'colorize'
+
 module MagicBell
   module ApiOperations
     def get(url, options = {})
@@ -29,7 +31,12 @@ module MagicBell
     protected
 
     def default_headers
-      authentication_headers.merge({ 'Content-Type' => 'application/json', 'Accept' => 'application/json' })
+      authentication_headers.merge(
+        {
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json'
+        }
+      )
     end
 
     private
@@ -42,15 +49,15 @@ module MagicBell
       e.response_headers = response.headers.to_h
       e.response_body = response.body
       e.errors = []
-      unless e.response_body.nil? || e.response_body.empty?
+      if e.response_body.present?
         body = JSON.parse(response.body)
         e.errors = body['errors'].is_a?(Array) ? body['errors'] : []
         e.errors.each do |error, _index|
           suggestion = error['suggestion']
           help_link = error['help_link']
 
-          puts suggestion.red.to_s if suggestion
-          puts help_link.blue.on_white.to_s if help_link
+          puts suggestion if suggestion
+          puts help_link if help_link
         end
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicBell
   class ApiResourceCollection
     def initialize(client, query_params = {})
