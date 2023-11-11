@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicBell
   class Config
     attr_writer :api_key, :api_secret, :api_host

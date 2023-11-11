@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/inflector'
 require 'active_support/core_ext/object/blank'
 require 'json'
@@ -43,7 +45,7 @@ module MagicBell
       @attributes
     end
 
-    alias_method :to_h, :attributes
+    alias to_h attributes
 
     def attribute(attribute_name)
       attributes[attribute_name]

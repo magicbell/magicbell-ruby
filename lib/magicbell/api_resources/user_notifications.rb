@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicBell
   class UserNotifications < ApiResourceCollection
     def name
