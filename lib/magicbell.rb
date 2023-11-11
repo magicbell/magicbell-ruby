@@ -24,8 +24,6 @@ require 'magicbell/api_resources/user_notifications_read'
 require 'magicbell/api_resources/user_notifications_seen'
 require 'magicbell/api_resources/user_notification_preferences'
 
-require 'magicbell/railtie' if defined?(Rails)
-
 module MagicBell
   class << self
     extend Forwardable
